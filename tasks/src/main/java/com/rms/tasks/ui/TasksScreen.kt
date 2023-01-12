@@ -78,7 +78,7 @@ fun TasksList(tasks: List<TaskItem>, onCheckedChanged: (Long, Boolean) -> Unit) 
         }
     }
 }
-
+//TODO better UI
 @Composable
 fun TaskItem(task: TaskItem, onCheckedChanged: (Long, Boolean) -> Unit) {
     ElevatedCard(
