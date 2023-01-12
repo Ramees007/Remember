@@ -1,0 +1,24 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.name = "Remember"
+include ':app'
+include ':notes'
+include ':common-ui'
+include ':tasks'
+include ':core'
+include ':tasks:data'
+include ':core:db'
+include ':core:ui'
