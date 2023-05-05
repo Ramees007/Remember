@@ -15,11 +15,11 @@ class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
         }
     }
 
-    override suspend fun insert(txt: String) {
+    override suspend fun insert(txt: String, timeStamp: Long?) {
         dao.insertAll(
             TaskDbItem(
                 task = txt,
-                timeStamp = System.currentTimeMillis(),
+                timeStamp = timeStamp,
                 isDone = false
             )
         )

@@ -7,10 +7,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -78,7 +82,7 @@ fun TasksList(tasks: List<TaskItem>, onCheckedChanged: (Long, Boolean) -> Unit) 
         }
     }
 }
-//TODO better UI
+
 @Composable
 fun TaskItem(task: TaskItem, onCheckedChanged: (Long, Boolean) -> Unit) {
     ElevatedCard(
@@ -88,14 +92,23 @@ fun TaskItem(task: TaskItem, onCheckedChanged: (Long, Boolean) -> Unit) {
         shape = RoundedCornerShape(4.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                text = task.task,
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .weight(1F)
-            )
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = task.task,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 4.dp)
+                )
+                if (task.date.isNotEmpty()) {
+                    Text(text = task.date,
+                        modifier = Modifier
+                            .padding(start = 8.dp, top = 0.dp, end = 8.dp, bottom = 8.dp))
+                } else {
+                    Spacer(modifier = Modifier.height(4.dp))
+                }
+            }
+
             RoundCheckBox(
                 isChecked = task.isDone,
                 onCheckedChanged = { onCheckedChanged(task.id, it) })

@@ -51,7 +51,9 @@ fun FullScreenGraph() {
             }
         }
         composable("taskDetail") {
-            TaskDetailsScreen()
+            TaskDetailsScreen(){
+                navController.navigateUp()
+            }
         }
     }
 }
