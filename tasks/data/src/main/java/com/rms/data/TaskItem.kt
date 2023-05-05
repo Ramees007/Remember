@@ -12,18 +12,10 @@ data class TaskItem(val id: Long, val task: String, val date: String, val isDone
             TaskItem(
                 uid,
                 task,
-                timeStamp?.formatAsDateString(DateFormat.DD_MM_YY).orEmpty(),
+                date.orEmpty(),
                 isDone
             )
         }
     }
 }
 
-enum class DateFormat(val format: String) {
-    DD_MM_YY("dd MM YY")
-}
-
-fun Long.formatAsDateString(dateFormat: DateFormat): String {
-    val df = SimpleDateFormat(dateFormat.format, Locale.getDefault())
-    return df.format(this)
-}

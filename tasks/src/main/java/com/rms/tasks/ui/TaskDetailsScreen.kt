@@ -15,7 +15,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.rms.tasks.presentation.TasksViewModel
+import com.rms.tasks.presentation.TaskDetailVM
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
@@ -25,7 +25,7 @@ import java.time.LocalDate
 
 @Composable
 fun TaskDetailsScreen(
-    vm: TasksViewModel = hiltViewModel(),
+    vm: TaskDetailVM = hiltViewModel(),
     onBack: () -> Unit
 ) {
     val textState = remember { mutableStateOf(TextFieldValue()) }

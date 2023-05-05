@@ -1,9 +1,11 @@
 package com.rms.data
 
+import com.rms.android_util.toDateString
 import com.rms.db.dao.TaskDao
 import com.rms.db.model.TaskDbItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 import javax.inject.Inject
 
 class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
@@ -15,11 +17,11 @@ class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
         }
     }
 
-    override suspend fun insert(txt: String, timeStamp: Long?) {
+    override suspend fun insert(txt: String, localDate: LocalDate?) {
         dao.insertAll(
             TaskDbItem(
                 task = txt,
-                timeStamp = timeStamp,
+                date = localDate?.toDateString(),
                 isDone = false
             )
         )

@@ -25,9 +25,6 @@ class TasksViewModel @Inject constructor(private val taskRepository: TaskReposit
         initialValue = TasksUiState.Loading
     )
 
-    var taskTimeStamp: Long? = null
-        private set
-
     fun onCheckedChanged(id: Long, isChecked: Boolean) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -35,25 +32,4 @@ class TasksViewModel @Inject constructor(private val taskRepository: TaskReposit
             }
         }
     }
-
-    fun save(txt: String) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                taskRepository.insert(txt, taskTimeStamp)
-            }
-        }
-    }
-
-    fun setTime(localDate: LocalDate) {
-//        val localNow: LocalDateTime = localDate
-//// setting UTC as the timezone
-//// setting UTC as the timezone
-//        val zonedUTC: ZonedDateTime = localNow.atZone(ZoneId.of("UTC"))
-//// converting to IST
-//// converting to IST
-//        val zonedIST: ZonedDateTime = zonedUTC.withZoneSameInstant(ZoneId.of("Asia/Kolkata"))
-//        localDate
-       // taskTimeStamp = timeStamp
-    }
-
 }

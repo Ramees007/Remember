@@ -7,6 +7,6 @@ import androidx.room.PrimaryKey
 data class TaskDbItem(
     @PrimaryKey(autoGenerate = true) val uid: Long = 0,
     val task: String,
-    val timeStamp: Long?,
+    val date: String?,
     val isDone: Boolean
 )
