@@ -15,6 +15,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.rms.android_util.DateFormat
+import com.rms.android_util.getCurrentLocalDate
+import com.rms.android_util.toLocalDate
 import com.rms.tasks.presentation.TaskDetailVM
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
@@ -32,6 +35,7 @@ fun TaskDetailsScreen(
     Column {
         Toolbar(
             onBack = onBack,
+            dateState = vm.taskDate.collectAsState(),
             onDateSet = {
                 vm.setTime(it)
             }
@@ -82,6 +86,7 @@ fun TextField(
 fun Toolbar(
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
+    dateState: State<String?>,
     onDateSet: (LocalDate) -> Unit
 ) {
     val dialogState = rememberMaterialDialogState()
@@ -99,26 +104,34 @@ fun Toolbar(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Icon(
-            imageVector = Icons.Outlined.DateRange,
-            tint = MaterialTheme.colorScheme.onBackground,
-            contentDescription = "",
-            modifier = Modifier
-                .size(28.dp)
-                .clickable {
-                    dialogState.show()
-                }
-        )
+        dateState.value?.let {
+            Text(text = it, modifier = Modifier.clickable {
+                dialogState.show()
+            })
+        } ?: run {
+            Icon(
+                imageVector = Icons.Outlined.DateRange,
+                tint = MaterialTheme.colorScheme.onBackground,
+                contentDescription = "",
+                modifier = Modifier
+                    .size(28.dp)
+                    .clickable {
+                        dialogState.show()
+                    }
+            )
+        }
     }
 
-    DateTimePickerDialog(dialogState, onDateSet)
+    DateTimePickerDialog(dialogState, dateState, onDateSet)
 }
 
 @Composable
 fun DateTimePickerDialog(
     dialogState: MaterialDialogState,
+    dateState: State<String?>,
     onDateSet: (LocalDate) -> Unit
 ) {
+
     MaterialDialog(
         dialogState = dialogState,
         buttons = {
@@ -126,7 +139,10 @@ fun DateTimePickerDialog(
             negativeButton("Cancel")
         }
     ) {
-        datepicker { date ->
+        datepicker(
+            initialDate = dateState.value?.toLocalDate(DateFormat.DD_MMM_YY)
+                ?: getCurrentLocalDate()
+        ) { date ->
             onDateSet(date)
         }
     }

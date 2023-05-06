@@ -6,6 +6,6 @@ import java.time.LocalDate
 
 interface TaskRepository {
     fun getAllTasks(): Flow<List<TaskItem>>
-    suspend fun insert(txt: String, localDate: LocalDate?)
+    suspend fun insert(txt: String, localDate: String?)
     suspend fun update(id: Long, isChecked: Boolean)
 }
