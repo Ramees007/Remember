@@ -39,6 +39,8 @@ dependencies {
     implementation project(':notes')
     implementation project(':tasks')
     implementation project(':core:db')
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
 }
 
 kapt {
