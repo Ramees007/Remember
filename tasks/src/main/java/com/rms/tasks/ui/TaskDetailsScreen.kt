@@ -1,7 +1,5 @@
 package com.rms.tasks.ui
 
-import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -10,11 +8,11 @@ import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rms.android_util.DateFormat
 import com.rms.android_util.getCurrentLocalDate
 import com.rms.android_util.toLocalDate
@@ -26,16 +24,26 @@ import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun TaskDetailsScreen(
     vm: TaskDetailVM = hiltViewModel(),
     onBack: () -> Unit
 ) {
-    val textState = remember { mutableStateOf(TextFieldValue()) }
+    val dateState = vm.taskDate.collectAsStateWithLifecycle()
+    val text = vm.taskDetailText
+    val saveState = vm.saveState.collectAsStateWithLifecycle()
+
+    if (saveState.value != null) {
+        LaunchedEffect(key1 = saveState.value) {
+            onBack()
+        }
+    }
+
     Column {
         Toolbar(
             onBack = onBack,
-            dateState = vm.taskDate.collectAsState(),
+            dateState = dateState,
             onDateSet = {
                 vm.setTime(it)
             }
@@ -44,29 +52,28 @@ fun TaskDetailsScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            textState
+            text = text,
+            onUpdateTask = {
+                vm.updateText(it)
+            }
         )
         Spacer(modifier = Modifier.weight(1f))
-        val context = LocalContext.current
-        Text(
-            text = "Save",
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onPrimary,
+        Button(
+            enabled = text.isNotEmpty(),
+            colors = ButtonDefaults.textButtonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                disabledContainerColor = MaterialTheme.colorScheme.scrim
+            ),
             modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primary)
-                .padding(16.dp)
-                .clickable {
-                    val txt = textState.value.text
-                    if (txt.isEmpty()) {
-                        Toast
-                            .makeText(context, "Enter task", Toast.LENGTH_LONG)
-                            .show()
-                    } else {
-                        vm.save(txt)
-                    }
-
-                })
+                .height(48.dp)
+                .fillMaxWidth(),
+            onClick = {
+                vm.save()
+            },
+            shape = RectangleShape
+        ) {
+            Text(text = "Save", color = MaterialTheme.colorScheme.onPrimary)
+        }
     }
 }
 
@@ -74,11 +81,12 @@ fun TaskDetailsScreen(
 @Composable
 fun TextField(
     modifier: Modifier,
-    textState: MutableState<TextFieldValue> = remember { mutableStateOf(TextFieldValue()) }
+    text: String,
+    onUpdateTask: (txt: String) -> Unit
 ) {
 
-    TextField(modifier = modifier.height(100.dp), value = textState.value, onValueChange = {
-        textState.value = it
+    TextField(modifier = modifier.height(100.dp), value = text, onValueChange = {
+        onUpdateTask(it)
     })
 }
 
@@ -103,12 +111,8 @@ fun Toolbar(
         )
 
         Spacer(modifier = Modifier.weight(1f))
-
-        dateState.value?.let {
-            Text(text = it, modifier = Modifier.clickable {
-                dialogState.show()
-            })
-        } ?: run {
+        val date = dateState.value
+        if (date.isNullOrEmpty()) {
             Icon(
                 imageVector = Icons.Outlined.DateRange,
                 tint = MaterialTheme.colorScheme.onBackground,
@@ -119,6 +123,10 @@ fun Toolbar(
                         dialogState.show()
                     }
             )
+        } else {
+            Text(text = date, modifier = Modifier.clickable {
+                dialogState.show()
+            })
         }
     }
 

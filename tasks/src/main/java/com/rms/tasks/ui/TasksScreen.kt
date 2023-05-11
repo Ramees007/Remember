@@ -1,20 +1,17 @@
 package com.rms.tasks.ui
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.CheckCircle
-import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
@@ -28,12 +25,17 @@ import com.rms.tasks.presentation.TasksViewModel
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun TasksRoute(vm: TasksViewModel = hiltViewModel(), modifier: Modifier) {
+fun TasksRoute(
+    vm: TasksViewModel = hiltViewModel(),
+    onNavigateToTaskDetail: (taskId: Long) -> Unit,
+    modifier: Modifier
+) {
     val uiState by vm.flow.collectAsStateWithLifecycle()
     TasksScreen(
         uiState = uiState,
         modifier = modifier,
-        onCheckedChanged = vm::onCheckedChanged
+        onCheckedChanged = vm::onCheckedChanged,
+        onNavigateToTaskDetail = onNavigateToTaskDetail
     )
 }
 
@@ -41,6 +43,7 @@ fun TasksRoute(vm: TasksViewModel = hiltViewModel(), modifier: Modifier) {
 fun TasksScreen(
     uiState: TasksUiState,
     onCheckedChanged: (Long, Boolean) -> Unit,
+    onNavigateToTaskDetail: (taskId: Long) -> Unit,
     modifier: Modifier
 ) {
     Column(
@@ -68,23 +71,38 @@ fun TasksScreen(
             }
 
             is TasksUiState.Tasks -> {
-                TasksList(tasks = uiState.tasks, onCheckedChanged = onCheckedChanged)
+                TasksList(
+                    tasks = uiState.tasks,
+                    onCheckedChanged = onCheckedChanged,
+                    onNavigateToTaskDetail = onNavigateToTaskDetail
+                )
             }
         }
     }
 }
 
 @Composable
-fun TasksList(tasks: List<TaskItem>, onCheckedChanged: (Long, Boolean) -> Unit) {
+fun TasksList(
+    tasks: List<TaskItem>,
+    onCheckedChanged: (Long, Boolean) -> Unit,
+    onNavigateToTaskDetail: (taskId: Long) -> Unit
+) {
     LazyColumn(modifier = Modifier.padding(top = 8.dp)) {
         items(items = tasks) { task ->
-            TaskItem(task = task, onCheckedChanged = onCheckedChanged)
+            TaskItem(
+                task = task,
+                onCheckedChanged = onCheckedChanged,
+                onNavigateToTaskDetail = onNavigateToTaskDetail
+            )
         }
     }
 }
 
 @Composable
-fun TaskItem(task: TaskItem, onCheckedChanged: (Long, Boolean) -> Unit) {
+fun TaskItem(
+    task: TaskItem, onCheckedChanged: (Long, Boolean) -> Unit,
+    onNavigateToTaskDetail: (taskId: Long) -> Unit
+) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -92,7 +110,11 @@ fun TaskItem(task: TaskItem, onCheckedChanged: (Long, Boolean) -> Unit) {
         shape = RoundedCornerShape(4.dp)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier
+                .weight(1f)
+                .clickable {
+                    onNavigateToTaskDetail(task.id)
+                }) {
                 Text(
                     text = task.task,
                     maxLines = 2,
@@ -101,9 +123,11 @@ fun TaskItem(task: TaskItem, onCheckedChanged: (Long, Boolean) -> Unit) {
                         .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 4.dp)
                 )
                 if (task.date.isNotEmpty()) {
-                    Text(text = task.date,
+                    Text(
+                        text = task.date,
                         modifier = Modifier
-                            .padding(start = 8.dp, top = 0.dp, end = 8.dp, bottom = 8.dp))
+                            .padding(start = 8.dp, top = 0.dp, end = 8.dp, bottom = 8.dp)
+                    )
                 } else {
                     Spacer(modifier = Modifier.height(4.dp))
                 }

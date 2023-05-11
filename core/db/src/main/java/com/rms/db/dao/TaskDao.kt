@@ -13,8 +13,14 @@ interface TaskDao {
     @Query("SELECT * FROM TaskDbItem")
     fun getAll(): Flow<List<TaskDbItem>>
 
+    @Query("SELECT * FROM TaskDbItem WHERE uid=:taskId")
+    suspend fun getTask(taskId: Long): TaskDbItem?
+
     @Insert
     suspend fun insertAll(vararg tasks: TaskDbItem)
+
+    @Query("UPDATE TaskDbItem SET task=:task, date=:date  WHERE uid=:id")
+    suspend fun update(id: Long, task: String, date: String?)
 
     @Delete
     suspend fun delete(task: TaskDbItem)

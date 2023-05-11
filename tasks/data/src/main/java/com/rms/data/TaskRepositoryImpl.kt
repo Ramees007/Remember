@@ -11,7 +11,7 @@ class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
 
     override fun getAllTasks(): Flow<List<TaskItem>> {
         return dao.getAll().map {
-            it.map { dbItem -> TaskItem.fromDB(dbItem) }
+            it.map { dbItem -> dbItem.toPresentation() }
         }
     }
 
@@ -29,5 +29,11 @@ class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
         dao.update(id, isChecked)
     }
 
+    override suspend fun getTask(taskId: Long): TaskItem? {
+        return dao.getTask(taskId)?.toPresentation()
+    }
 
+    override suspend fun update(id: Long, task: String, localDate: String?) {
+        dao.update(id, task, localDate)
+    }
 }

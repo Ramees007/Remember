@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import androidx.navigation.navArgument
 import com.rms.notes.NotesScreen
 import com.rms.remember.bottom_nav.BottomNavItem
 import com.rms.remember.bottom_nav.BottomNavigation
@@ -46,12 +47,18 @@ fun FullScreenGraph() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            MainScreenView() {
+            MainScreenView(onNavigateToAddTask = {
                 navController.navigate("taskDetail")
-            }
+            },
+                onNavigateToTaskDetail = {
+                    navController.navigate("taskDetail?taskId=$it")
+                })
         }
-        composable("taskDetail") {
-            TaskDetailsScreen(){
+        composable(
+            "taskDetail?taskId={taskId}",
+            arguments = listOf(navArgument("taskId") { nullable = true })
+        ) {
+            TaskDetailsScreen {
                 navController.navigateUp()
             }
         }
@@ -60,7 +67,10 @@ fun FullScreenGraph() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreenView(onNavigateToAddTask: () -> Unit) {
+fun MainScreenView(
+    onNavigateToAddTask: () -> Unit,
+    onNavigateToTaskDetail: (taskId: Long) -> Unit
+) {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomNavigation(navController = navController) },
@@ -82,18 +92,29 @@ fun MainScreenView(onNavigateToAddTask: () -> Unit) {
             }
         }
     ) {
-        NavigationGraph(navController = navController, padding = it)
+        NavigationGraph(
+            navController = navController,
+            padding = it,
+            onNavigateToTaskDetail = onNavigateToTaskDetail
+        )
     }
 }
 
 
 @Composable
-fun NavigationGraph(navController: NavHostController, padding: PaddingValues) {
+fun NavigationGraph(
+    navController: NavHostController,
+    padding: PaddingValues,
+    onNavigateToTaskDetail: (taskId: Long) -> Unit
+) {
     NavHost(navController = navController, startDestination = BottomNavItem.Tasks.route) {
 
         //tasksGraph(navController, padding, app)
         composable(BottomNavItem.Tasks.route) {
-            TasksRoute(modifier = Modifier.padding(padding))
+            TasksRoute(
+                modifier = Modifier.padding(padding),
+                onNavigateToTaskDetail = onNavigateToTaskDetail
+            )
         }
         composable(BottomNavItem.Notes.route) {
             NotesScreen(Modifier.padding(padding))
