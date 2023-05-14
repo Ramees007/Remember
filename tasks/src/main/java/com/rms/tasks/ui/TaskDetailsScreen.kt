@@ -148,7 +148,8 @@ fun DateTimePickerDialog(
         }
     ) {
         datepicker(
-            initialDate = dateState.value?.toLocalDate(DateFormat.DD_MMM_YY)
+            initialDate = dateState.value?.takeIf { it.isNotEmpty() }
+                ?.toLocalDate(DateFormat.DD_MMM_YY)
                 ?: getCurrentLocalDate()
         ) { date ->
             onDateSet(date)
