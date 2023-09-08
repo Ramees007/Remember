@@ -42,7 +42,7 @@ internal fun Project.configureAndroidCompose(
         }
 
         composeOptions {
-            kotlinCompilerExtensionVersion = "1.3.2"
+            kotlinCompilerExtensionVersion = "1.4.0"
         }
 
         //TODO Handle library versions at a single place
@@ -50,7 +50,7 @@ internal fun Project.configureAndroidCompose(
             add("implementation", "androidx.compose.runtime:runtime:1.3.2")
             add("implementation", "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha03")
             add("implementation", "androidx.compose.foundation:foundation:1.3.1")
-            add("implementation", "androidx.compose.material3:material3:1.0.1")
+            add("implementation", "androidx.compose.material3:material3:1.1.1")
             add("implementation", "androidx.lifecycle:lifecycle-runtime-compose:2.5.1")
             add("implementation", "androidx.navigation:navigation-compose:2.5.3")
         }
