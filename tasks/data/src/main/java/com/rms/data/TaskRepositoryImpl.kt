@@ -36,4 +36,8 @@ class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
     override suspend fun update(id: Long, task: String, localDate: String?) {
         dao.update(id, task, localDate)
     }
+
+    override suspend fun delete(taskId: Long) {
+        dao.deleteById(taskId)
+    }
 }

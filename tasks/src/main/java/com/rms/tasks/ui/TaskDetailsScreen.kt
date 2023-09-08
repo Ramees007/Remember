@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rms.android_util.DateFormat
 import com.rms.android_util.getCurrentLocalDate
@@ -23,8 +22,6 @@ import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import java.time.LocalDate
 
-
-@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun TaskDetailsScreen(
     vm: TaskDetailVM = hiltViewModel(),

@@ -1,5 +1,7 @@
 package com.rms.tasks.ui
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -14,16 +16,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rms.data.TaskItem
 import com.rms.tasks.presentation.TasksUiState
 import com.rms.tasks.presentation.TasksViewModel
 
-@OptIn(ExperimentalLifecycleComposeApi::class)
+
 @Composable
 fun TasksRoute(
     vm: TasksViewModel = hiltViewModel(),
@@ -35,7 +39,8 @@ fun TasksRoute(
         uiState = uiState,
         modifier = modifier,
         onCheckedChanged = vm::onCheckedChanged,
-        onNavigateToTaskDetail = onNavigateToTaskDetail
+        onNavigateToTaskDetail = onNavigateToTaskDetail,
+        onDeleteTask = vm::onDelete
     )
 }
 
@@ -44,6 +49,7 @@ fun TasksScreen(
     uiState: TasksUiState,
     onCheckedChanged: (Long, Boolean) -> Unit,
     onNavigateToTaskDetail: (taskId: Long) -> Unit,
+    onDeleteTask: (Long) -> Unit,
     modifier: Modifier
 ) {
     Column(
@@ -74,28 +80,64 @@ fun TasksScreen(
                 TasksList(
                     tasks = uiState.tasks,
                     onCheckedChanged = onCheckedChanged,
-                    onNavigateToTaskDetail = onNavigateToTaskDetail
+                    onNavigateToTaskDetail = onNavigateToTaskDetail,
+                    onDeleteTask = onDeleteTask
                 )
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TasksList(
     tasks: List<TaskItem>,
     onCheckedChanged: (Long, Boolean) -> Unit,
-    onNavigateToTaskDetail: (taskId: Long) -> Unit
+    onNavigateToTaskDetail: (taskId: Long) -> Unit,
+    onDeleteTask: (Long) -> Unit
 ) {
     LazyColumn(modifier = Modifier.padding(top = 8.dp)) {
-        items(items = tasks) { task ->
-            TaskItem(
-                task = task,
-                onCheckedChanged = onCheckedChanged,
-                onNavigateToTaskDetail = onNavigateToTaskDetail
+        items(items = tasks, { item -> item.id }) { task ->
+            val dismissState = rememberDismissState()
+            if (dismissState.isDismissed(DismissDirection.StartToEnd)) {
+                onDeleteTask(task.id)
+            }
+            SwipeToDismiss(
+                state = dismissState,
+                background = {
+                    DismissBg(dismissState = dismissState)
+                },
+                directions = setOf(
+                    DismissDirection.StartToEnd
+                ),
+                dismissContent = {
+                    TaskItem(
+                        task = task,
+                        onCheckedChanged = onCheckedChanged,
+                        onNavigateToTaskDetail = onNavigateToTaskDetail
+                    )
+                }
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DismissBg(dismissState: DismissState) {
+    val color by animateColorAsState(
+        when (dismissState.targetValue) {
+            DismissValue.Default -> Color.White
+            else -> Color.Red
+        }, label = "bg_color_anim"
+    )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 8.dp, vertical = 2.dp)
+            .clip(shape = RoundedCornerShape(4.dp))
+            .background(color)
+    )
 }
 
 @Composable

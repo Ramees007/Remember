@@ -2,6 +2,7 @@ package com.rms.tasks.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rms.data.TaskItem
 import com.rms.data.TaskRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +30,14 @@ class TasksViewModel @Inject constructor(private val taskRepository: TaskReposit
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 taskRepository.update(id, isChecked)
+            }
+        }
+    }
+
+    fun onDelete(taskId: Long){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                taskRepository.delete(taskId)
             }
         }
     }

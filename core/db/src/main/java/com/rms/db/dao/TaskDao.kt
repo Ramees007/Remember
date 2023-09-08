@@ -22,8 +22,8 @@ interface TaskDao {
     @Query("UPDATE TaskDbItem SET task=:task, date=:date  WHERE uid=:id")
     suspend fun update(id: Long, task: String, date: String?)
 
-    @Delete
-    suspend fun delete(task: TaskDbItem)
+    @Query("DELETE FROM TaskDbItem WHERE uid = :userId")
+    fun deleteById(userId: Long)
 
     @Query("UPDATE TaskDbItem SET isDone=:isDone WHERE uid=:id")
     suspend fun update(id: Long, isDone: Boolean)
