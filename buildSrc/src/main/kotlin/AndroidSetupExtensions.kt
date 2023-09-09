@@ -1,8 +1,11 @@
 import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalog
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
 internal fun CommonExtension<*, *, *, *>.configureKotlin() {
@@ -45,15 +48,16 @@ internal fun Project.configureAndroidCompose(
             kotlinCompilerExtensionVersion = "1.4.0"
         }
 
-        //TODO Handle library versions at a single place
         dependencies {
-            add("implementation", "androidx.compose.runtime:runtime:1.3.2")
-            add("implementation", "androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0-alpha03")
-            add("implementation", "androidx.compose.foundation:foundation:1.3.1")
-            add("implementation", "androidx.compose.material3:material3:1.1.1")
-            add("implementation", "androidx.lifecycle:lifecycle-runtime-compose:2.5.1")
-            add("implementation", "androidx.navigation:navigation-compose:2.5.3")
+            add("implementation", libs().findLibrary("androidx.compose.runtime").get())
+            add("implementation", libs().findLibrary("androidx.lifecycle.vm.compose").get())
+            add("implementation", libs().findLibrary("androidx.compose.foundation").get())
+            add("implementation", libs().findLibrary("androidx.compose.material3").get())
+            add("implementation", libs().findLibrary("androidx.lifecycle.runtime.compose").get())
+            add("implementation", libs().findLibrary("androidx.navigation.compose").get())
         }
     }
 }
+
+fun Project.libs(): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
 

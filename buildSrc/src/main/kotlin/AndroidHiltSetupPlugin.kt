@@ -1,6 +1,9 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalog
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByType
 
 class AndroidHiltSetupPlugin : Plugin<Project> {
 
@@ -10,10 +13,9 @@ class AndroidHiltSetupPlugin : Plugin<Project> {
                 apply("com.google.dagger.hilt.android")
                 apply("kotlin-kapt")
             }
-
             dependencies {
-                add("implementation", "com.google.dagger:hilt-android:2.44.2")
-                add("kapt", "com.google.dagger:hilt-compiler:2.44.2")
+                add("implementation", libs().findLibrary("hilt.android").get())
+                add("kapt", libs().findLibrary("hilt.compiler").get())
             }
         }
     }
