@@ -1,5 +1,8 @@
 [versions]
 desugar-jdk-libs = "2.0.3"
+agp = "7.4.1"
+kgp = "1.8.0"
+javapoet = "1.13.0"
 room = "2.5.2"
 hilt-compiler = "2.44.2"
 hilt-android = "2.44.2"
@@ -29,6 +32,9 @@ androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "a
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
 desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
+agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+kgp = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kgp" }
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 
 #room
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }

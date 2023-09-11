@@ -3,9 +3,9 @@ plugins {
 }
 
 dependencies {
-    implementation("com.android.tools.build:gradle:7.4.1")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0")
-    implementation("com.squareup:javapoet:1.13.0")
+    implementation(libs.agp)
+    implementation(libs.kgp)
+    implementation(libs.javapoet)
 }
 
 gradlePlugin {
