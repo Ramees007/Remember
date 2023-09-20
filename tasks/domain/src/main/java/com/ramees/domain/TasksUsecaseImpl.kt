@@ -13,10 +13,11 @@ class TasksUsecaseImpl @Inject constructor(private val taskRepository: TaskRepos
     TasksUsecase {
 
     override fun getAllTasks(): Flow<List<TaskItem>> {
-        return taskRepository.getAllTasks().map {
-            it.map { it.toDomainModel() }.sortedWith(compareBy(nullsLast()) {
-                it.date.takeIf { it.isNotEmpty() }?.toLocalDate()
-            })
+        return taskRepository.getAllTasks().map { tasks ->
+            tasks.filter { !it.isDone }.map { it.toDomainModel() }
+                .sortedWith(compareBy(nullsLast()) { task ->
+                    task.date.takeIf { it.isNotEmpty() }?.toLocalDate()
+                })
         }.flowOn(Dispatchers.IO)
     }
 

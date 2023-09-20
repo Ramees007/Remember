@@ -20,12 +20,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramees.domain.TaskItem
 import com.ramees.domain.TaskStatus
 import com.rms.tasks.presentation.TasksUiState
 import com.rms.tasks.presentation.TasksViewModel
+import com.rms.ui.theme.LightGreen
+import com.rms.ui.theme.LightRed
 
 
 @Composable
@@ -170,6 +173,7 @@ fun TaskItem(
                 if (task.date.isNotEmpty()) {
                     Text(
                         text = task.date,
+                        fontSize = 12.sp,
                         modifier = Modifier
                             .padding(start = 8.dp, top = 0.dp, end = 8.dp, bottom = 8.dp)
                     )
@@ -211,8 +215,8 @@ fun RoundCheckBox(isChecked: Boolean, onCheckedChanged: (Boolean) -> Unit) {
 
 private fun TaskItem.getContainerColor(): Color {
     return when (status) {
-        TaskStatus.PastUnDone -> Color.Red
-        TaskStatus.TodaysUnDone -> Color.Green
+        TaskStatus.PastUnDone -> LightRed
+        TaskStatus.TodaysUnDone -> LightGreen
         else -> Color.White
     }
 }
