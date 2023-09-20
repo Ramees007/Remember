@@ -6,21 +6,18 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rms.android_util.toDateString
-import com.rms.data.TaskItem
-import com.rms.data.TaskRepository
+import com.ramees.domain.TasksUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import toDateString
 import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class TaskDetailVM @Inject constructor(
-    private val taskRepository: TaskRepository,
+    private val tasksUsecase: TasksUsecase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -38,10 +35,8 @@ class TaskDetailVM @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val task: TaskItem? = withContext(Dispatchers.IO) {
-                taskId?.let { taskId ->
-                    taskRepository.getTask(taskId)
-                }
+            val task = taskId?.let { taskId ->
+                tasksUsecase.getTask(taskId)
             }
             taskDetailText = task?.task.orEmpty()
             _taskDate.value = task?.date
@@ -50,11 +45,9 @@ class TaskDetailVM @Inject constructor(
 
     fun save() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                taskId?.let {
-                    taskRepository.update(it, taskDetailText, taskDate.value)
-                } ?: taskRepository.insert(taskDetailText, taskDate.value)
-            }
+            taskId?.let {
+                tasksUsecase.update(it, taskDetailText, taskDate.value)
+            } ?: tasksUsecase.insert(taskDetailText, taskDate.value)
             _saveState.value = Unit
         }
     }

@@ -12,14 +12,13 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.rms.android_util.DateFormat
-import com.rms.android_util.getCurrentLocalDate
-import com.rms.android_util.toLocalDate
 import com.rms.tasks.presentation.TaskDetailVM
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
+import getCurrentLocalDate
+import toLocalDate
 import java.time.LocalDate
 
 @Composable
@@ -146,7 +145,7 @@ fun DateTimePickerDialog(
     ) {
         datepicker(
             initialDate = dateState.value?.takeIf { it.isNotEmpty() }
-                ?.toLocalDate(DateFormat.DD_MMM_YY)
+                ?.toLocalDate()
                 ?: getCurrentLocalDate()
         ) { date ->
             onDateSet(date)

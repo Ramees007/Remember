@@ -8,5 +8,5 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:db"))
+    api(project(":core:db"))
 }

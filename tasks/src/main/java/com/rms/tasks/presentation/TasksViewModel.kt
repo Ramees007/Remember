@@ -2,22 +2,19 @@ package com.rms.tasks.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.rms.data.TaskItem
-import com.rms.data.TaskRepository
+import com.ramees.domain.TasksUsecase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZonedDateTime
 import javax.inject.Inject
 
 @HiltViewModel
-class TasksViewModel @Inject constructor(private val taskRepository: TaskRepository) : ViewModel() {
+class TasksViewModel @Inject constructor(private val tasksUsecase: TasksUsecase) : ViewModel() {
 
-    val flow: StateFlow<TasksUiState> = taskRepository.getAllTasks().map {
+    val flow: StateFlow<TasksUiState> = tasksUsecase.getAllTasks().map {
         if (it.isEmpty()) TasksUiState.Empty
         else TasksUiState.Tasks(it)
     }.stateIn(
@@ -28,17 +25,13 @@ class TasksViewModel @Inject constructor(private val taskRepository: TaskReposit
 
     fun onCheckedChanged(id: Long, isChecked: Boolean) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                taskRepository.update(id, isChecked)
-            }
+            tasksUsecase.update(id, isChecked)
         }
     }
 
-    fun onDelete(taskId: Long){
+    fun onDelete(taskId: Long) {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                taskRepository.delete(taskId)
-            }
+            tasksUsecase.delete(taskId)
         }
     }
 }

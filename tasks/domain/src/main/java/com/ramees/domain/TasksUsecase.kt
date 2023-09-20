@@ -1,14 +1,18 @@
-package com.rms.data
+package com.ramees.domain
 
-import com.rms.db.model.TaskDbItem
 import kotlinx.coroutines.flow.Flow
 
+interface TasksUsecase {
 
-interface TaskRepository {
-    fun getAllTasks(): Flow<List<TaskDbItem>>
-    suspend fun getTask(taskId: Long): TaskDbItem?
+    fun getAllTasks(): Flow<List<TaskItem>>
+
+    suspend fun getTask(id: Long): TaskItem?
+
     suspend fun insert(txt: String, localDate: String?)
+
     suspend fun update(id: Long, isChecked: Boolean)
+
     suspend fun delete(taskId: Long)
+
     suspend fun update(id: Long, task: String, localDate: String?)
 }

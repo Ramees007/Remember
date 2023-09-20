@@ -1,6 +1,6 @@
 package com.rms.tasks.presentation
 
-import com.rms.data.TaskItem
+import com.ramees.domain.TaskItem
 
 sealed interface TasksUiState {
     object Loading : TasksUiState

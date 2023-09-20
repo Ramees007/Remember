@@ -19,11 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.rms.data.TaskItem
+import com.ramees.domain.TaskItem
+import com.ramees.domain.TaskStatus
 import com.rms.tasks.presentation.TasksUiState
 import com.rms.tasks.presentation.TasksViewModel
 
@@ -149,7 +149,10 @@ fun TaskItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 2.dp),
-        shape = RoundedCornerShape(4.dp)
+        shape = RoundedCornerShape(4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = task.getContainerColor()
+        ),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(modifier = Modifier
@@ -203,5 +206,13 @@ fun RoundCheckBox(isChecked: Boolean, onCheckedChanged: (Boolean) -> Unit) {
                     .size(23.dp)
             )
         }
+    }
+}
+
+private fun TaskItem.getContainerColor(): Color {
+    return when (status) {
+        TaskStatus.PastUnDone -> Color.Red
+        TaskStatus.TodaysUnDone -> Color.Green
+        else -> Color.White
     }
 }

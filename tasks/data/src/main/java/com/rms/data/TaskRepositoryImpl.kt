@@ -9,10 +9,8 @@ import javax.inject.Inject
 class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
     TaskRepository {
 
-    override fun getAllTasks(): Flow<List<TaskItem>> {
-        return dao.getAll().map {
-            it.map { dbItem -> dbItem.toPresentation() }
-        }
+    override fun getAllTasks(): Flow<List<TaskDbItem>> {
+        return dao.getAll()
     }
 
     override suspend fun insert(txt: String, localDate: String?) {
@@ -29,8 +27,8 @@ class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
         dao.update(id, isChecked)
     }
 
-    override suspend fun getTask(taskId: Long): TaskItem? {
-        return dao.getTask(taskId)?.toPresentation()
+    override suspend fun getTask(taskId: Long): TaskDbItem? {
+        return dao.getTask(taskId)
     }
 
     override suspend fun update(id: Long, task: String, localDate: String?) {
