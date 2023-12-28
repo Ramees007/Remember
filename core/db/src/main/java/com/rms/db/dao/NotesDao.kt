@@ -1,6 +1,7 @@
 package com.rms.db.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -18,4 +19,7 @@ interface NotesDao {
 
     @Query("SELECT * from NotesDbItem WHERE uid=:id LIMIT 1")
     suspend fun getNote(id:Long): NotesDbItem?
+
+    @Query("DELETE FROM NotesDbItem WHERE uid = :id")
+    suspend fun delete(id: Long)
 }

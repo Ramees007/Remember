@@ -1,6 +1,8 @@
 package com.rms.notes.di
 
 import com.rms.db.dao.NotesDao
+import com.rms.domain.DeleteNoteUseCase
+import com.rms.domain.DeleteNoteUseCaseImpl
 import com.rms.domain.GetNoteUseCase
 import com.rms.domain.GetNoteUseCaseImpl
 import com.rms.domain.GetNotesUseCase
@@ -32,4 +34,8 @@ object NotesModule {
     @Provides
     fun getNoteUseCase(notesRepository: NotesRepository): GetNoteUseCase =
         GetNoteUseCaseImpl(notesRepository)
+
+    @Provides
+    fun provideDeleteUseCase(notesRepository: NotesRepository): DeleteNoteUseCase =
+        DeleteNoteUseCaseImpl(notesRepository)
 }

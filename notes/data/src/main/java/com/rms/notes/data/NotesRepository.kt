@@ -10,4 +10,6 @@ interface NotesRepository {
     suspend fun saveNote(note: String, id: Long?)
 
     suspend fun getNote(noteId: Long): NotesItem?
+
+    suspend fun deleteNote(noteId: Long)
 }

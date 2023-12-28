@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import androidx.lifecycle.viewmodel.compose.saveable
+import com.rms.domain.DeleteNoteUseCase
 import com.rms.domain.GetNoteUseCase
 import com.rms.domain.SaveNoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +21,8 @@ import javax.inject.Inject
 class NoteDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val saveNoteUseCase: SaveNoteUseCase,
-    private val getNoteUseCase: GetNoteUseCase
+    private val getNoteUseCase: GetNoteUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase
 ) : ViewModel() {
 
     private val noteId: Long? = savedStateHandle.get<String?>("noteId")?.toLongOrNull()
@@ -34,6 +36,8 @@ class NoteDetailViewModel @Inject constructor(
     val saveState: StateFlow<Unit?>
         get() = _saveState
 
+    val isEdit = noteId != null
+
     init {
         fetchNote()
     }
@@ -45,6 +49,14 @@ class NoteDetailViewModel @Inject constructor(
     fun saveNote() {
         viewModelScope.launch {
             saveNoteUseCase.saveNote(note.text, noteId)
+            _saveState.emit(Unit)
+        }
+    }
+
+    fun deleteNote() {
+        if (noteId == null) return
+        viewModelScope.launch {
+            deleteNoteUseCase.deleteNote(noteId)
             _saveState.emit(Unit)
         }
     }

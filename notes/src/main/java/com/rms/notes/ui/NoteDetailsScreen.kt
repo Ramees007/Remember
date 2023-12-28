@@ -4,13 +4,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -39,13 +42,21 @@ fun NoteDetailsScreen(
         }
     }
 
+    val isEdit = viewModel.isEdit
 
     Column {
-        Toolbar(onBack = onBack)
+        Toolbar(
+            isEdit = isEdit,
+            onBack = onBack,
+            onDelete = {
+                viewModel.deleteNote()
+            })
         TextField(
             value = viewModel.note,
             onValueChange = { viewModel.updateNote(it) },
-            modifier = Modifier.fillMaxWidth().heightIn(min = 200.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.5f)
         )
 
         Button(
@@ -69,8 +80,10 @@ fun NoteDetailsScreen(
 
 @Composable
 fun Toolbar(
+    isEdit: Boolean,
     modifier: Modifier = Modifier,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onDelete: () -> Unit
 ) {
 
     Row(modifier = modifier.padding(16.dp)) {
@@ -86,5 +99,18 @@ fun Toolbar(
         )
 
         Spacer(modifier = Modifier.weight(1f))
+
+        if (isEdit) {
+            Icon(
+                imageVector = Icons.Filled.Delete,
+                contentDescription = "Delete",
+                tint = MaterialTheme.colorScheme.onBackground,
+                modifier = Modifier.clickable {
+                    onDelete()
+                }
+            )
+        }
     }
+
+
 }

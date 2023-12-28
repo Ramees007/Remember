@@ -67,9 +67,11 @@ fun FullScreenGraph() {
             "taskDetail?taskId={taskId}",
             arguments = listOf(navArgument("taskId") { nullable = true })
         ) {
-            TaskDetailsScreen(onBack = {
-                navController.navigateUp()
-            })
+            TaskDetailsScreen(
+                onBack = {
+                    navController.navigateUp()
+                }
+            )
         }
 
         composable(
