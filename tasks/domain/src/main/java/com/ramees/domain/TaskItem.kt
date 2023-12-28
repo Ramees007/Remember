@@ -3,7 +3,9 @@ package com.ramees.domain
 import com.rms.db.model.TaskDbItem
 import toLocalDate
 import java.time.LocalDate
+import javax.annotation.concurrent.Immutable
 
+@Immutable
 data class TaskItem(
     val id: Long,
     val task: String,

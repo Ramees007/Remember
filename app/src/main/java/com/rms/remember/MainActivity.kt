@@ -15,7 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import androidx.navigation.navArgument
-import com.rms.notes.NotesScreen
+import com.rms.notes.ui.NoteDetailsScreen
+import com.rms.notes.ui.NotesRoute
 import com.rms.remember.bottom_nav.BottomNavItem
 import com.rms.remember.bottom_nav.BottomNavigation
 import com.rms.tasks.ui.TaskDetailsScreen
@@ -47,29 +48,47 @@ fun FullScreenGraph() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            MainScreenView(onNavigateToAddTask = {
-                navController.navigate("taskDetail")
-            },
+            MainScreenView(
+                onNavigateToAddTask = {
+                    navController.navigate("taskDetail")
+                },
                 onNavigateToTaskDetail = {
                     navController.navigate("taskDetail?taskId=$it")
-                })
+                },
+                onNavigateToAddNote = {
+                    navController.navigate("noteDetail")
+                },
+                onNavigateToNoteDetails = {
+                    navController.navigate("noteDetail?noteId=$it")
+                }
+            )
         }
         composable(
             "taskDetail?taskId={taskId}",
             arguments = listOf(navArgument("taskId") { nullable = true })
         ) {
-            TaskDetailsScreen {
+            TaskDetailsScreen(onBack = {
                 navController.navigateUp()
-            }
+            })
+        }
+
+        composable(
+            "noteDetail?noteId={noteId}",
+            arguments = listOf(navArgument("noteId") { nullable = true })
+        ) {
+            NoteDetailsScreen(onBack = {
+                navController.navigateUp()
+            })
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreenView(
     onNavigateToAddTask: () -> Unit,
-    onNavigateToTaskDetail: (taskId: Long) -> Unit
+    onNavigateToAddNote: () -> Unit,
+    onNavigateToTaskDetail: (taskId: Long) -> Unit,
+    onNavigateToNoteDetails: (id: Long) -> Unit
 ) {
     val navController = rememberNavController()
     Scaffold(
@@ -84,7 +103,7 @@ fun MainScreenView(
                     }
 
                     BottomNavItem.Notes.route -> {
-
+                        onNavigateToAddNote()
                     }
                 }
             }) {
@@ -95,7 +114,8 @@ fun MainScreenView(
         NavigationGraph(
             navController = navController,
             padding = it,
-            onNavigateToTaskDetail = onNavigateToTaskDetail
+            onNavigateToTaskDetail = onNavigateToTaskDetail,
+            onNavigateToNoteDetails = onNavigateToNoteDetails
         )
     }
 }
@@ -105,7 +125,8 @@ fun MainScreenView(
 fun NavigationGraph(
     navController: NavHostController,
     padding: PaddingValues,
-    onNavigateToTaskDetail: (taskId: Long) -> Unit
+    onNavigateToTaskDetail: (taskId: Long) -> Unit,
+    onNavigateToNoteDetails: (id: Long) -> Unit
 ) {
     NavHost(navController = navController, startDestination = BottomNavItem.Tasks.route) {
 
@@ -117,7 +138,10 @@ fun NavigationGraph(
             )
         }
         composable(BottomNavItem.Notes.route) {
-            NotesScreen(Modifier.padding(padding))
+            NotesRoute(
+                modifier = Modifier.padding(padding),
+                onNavigateToNoteDetails = onNavigateToNoteDetails
+            )
         }
     }
 }

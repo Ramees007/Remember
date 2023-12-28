@@ -48,7 +48,7 @@ class TaskDetailVM @Inject constructor(
             taskId?.let {
                 tasksUsecase.update(it, taskDetailText, taskDate.value)
             } ?: tasksUsecase.insert(taskDetailText, taskDate.value)
-            _saveState.value = Unit
+            _saveState.emit(Unit)
         }
     }
 

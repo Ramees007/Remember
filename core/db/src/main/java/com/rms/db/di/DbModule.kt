@@ -3,6 +3,7 @@ package com.rms.db.di
 import android.content.Context
 import androidx.room.Room
 import com.rms.db.AppDataBase
+import com.rms.db.dao.NotesDao
 import com.rms.db.dao.TaskDao
 import dagger.Module
 import dagger.Provides
@@ -26,4 +27,8 @@ class DbModule {
     @Provides
     @Singleton
     fun provideTaskDao(db: AppDataBase): TaskDao = db.taskDao()
+
+    @Provides
+    @Singleton
+    fun providesNotesDao(db: AppDataBase): NotesDao = db.notestDao()
 }

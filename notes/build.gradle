@@ -1,6 +1,7 @@
 plugins {
     id("com.rms.android-library.plugin")
     id("com.rms.module-compose.plugin")
+    id("com.rms.android-hilt.plugin")
 }
 
 android {
@@ -9,4 +10,8 @@ android {
 
 dependencies {
     implementation project(':core:ui')
+    implementation project(':core:db')
+    implementation project(':notes:domain')
+
+    implementation libs.androidx.hilt.navigation.compose
 }
