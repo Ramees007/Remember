@@ -3,17 +3,21 @@ package com.rms.remember
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.rms.notes.ui.NoteDetailsScreen
 import com.rms.notes.ui.NotesRoute
@@ -48,19 +52,41 @@ fun FullScreenGraph() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            MainScreenView(
-                onNavigateToAddTask = {
-                    navController.navigate("taskDetail")
-                },
-                onNavigateToTaskDetail = {
-                    navController.navigate("taskDetail?taskId=$it")
-                },
-                onNavigateToAddNote = {
-                    navController.navigate("noteDetail")
-                },
-                onNavigateToNoteDetails = {
-                    navController.navigate("noteDetail?noteId=$it")
-                }
+            MainScreenView()
+        }
+    }
+}
+
+@Composable
+fun MainScreenView() {
+    val navController = rememberNavController()
+    Scaffold(
+        bottomBar = { BottomNavigation(navController = navController) }
+    ) {
+        Box(modifier = Modifier.padding(it)) {
+            NavigationGraph(
+                navController = navController
+            )
+        }
+    }
+}
+
+
+@Composable
+fun NavigationGraph(
+    navController: NavHostController
+) {
+    NavHost(navController = navController, startDestination = BottomNavItem.Tasks.route) {
+        tasksGraph(navController)
+        notesGraph(navController)
+    }
+}
+
+fun NavGraphBuilder.tasksGraph(navController: NavController) {
+    navigation(startDestination = "tasksList", route = BottomNavItem.Tasks.route) {
+        composable("tasksList") {
+            TasksRoute(
+                navController = navController
             )
         }
         composable(
@@ -73,7 +99,16 @@ fun FullScreenGraph() {
                 }
             )
         }
+    }
+}
 
+fun NavGraphBuilder.notesGraph(navController: NavController) {
+    navigation(startDestination = "notesList", route = BottomNavItem.Notes.route) {
+        composable("notesList") {
+            NotesRoute(
+                navController = navController
+            )
+        }
         composable(
             "noteDetail?noteId={noteId}",
             arguments = listOf(navArgument("noteId") { nullable = true })
@@ -84,87 +119,3 @@ fun FullScreenGraph() {
         }
     }
 }
-
-@Composable
-fun MainScreenView(
-    onNavigateToAddTask: () -> Unit,
-    onNavigateToAddNote: () -> Unit,
-    onNavigateToTaskDetail: (taskId: Long) -> Unit,
-    onNavigateToNoteDetails: (id: Long) -> Unit
-) {
-    val navController = rememberNavController()
-    Scaffold(
-        bottomBar = { BottomNavigation(navController = navController) },
-        floatingActionButton = {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            FloatingActionButton(onClick = {
-                when (navBackStackEntry?.destination?.route) {
-
-                    BottomNavItem.Tasks.route -> {
-                        onNavigateToAddTask()
-                    }
-
-                    BottomNavItem.Notes.route -> {
-                        onNavigateToAddNote()
-                    }
-                }
-            }) {
-                Icon(Icons.Filled.Add, "Add")
-            }
-        }
-    ) {
-        NavigationGraph(
-            navController = navController,
-            padding = it,
-            onNavigateToTaskDetail = onNavigateToTaskDetail,
-            onNavigateToNoteDetails = onNavigateToNoteDetails
-        )
-    }
-}
-
-
-@Composable
-fun NavigationGraph(
-    navController: NavHostController,
-    padding: PaddingValues,
-    onNavigateToTaskDetail: (taskId: Long) -> Unit,
-    onNavigateToNoteDetails: (id: Long) -> Unit
-) {
-    NavHost(navController = navController, startDestination = BottomNavItem.Tasks.route) {
-
-        //tasksGraph(navController, padding, app)
-        composable(BottomNavItem.Tasks.route) {
-            TasksRoute(
-                modifier = Modifier.padding(padding),
-                onNavigateToTaskDetail = onNavigateToTaskDetail
-            )
-        }
-        composable(BottomNavItem.Notes.route) {
-            NotesRoute(
-                modifier = Modifier.padding(padding),
-                onNavigateToNoteDetails = onNavigateToNoteDetails
-            )
-        }
-    }
-}
-
-//fun NavGraphBuilder.tasksGraph(navController: NavController, padding: PaddingValues, app: Context) {
-//    navigation(startDestination = BottomNavItem.Tasks.route, route = "tasksGraph") {
-//        composable(BottomNavItem.Tasks.route) {
-//            val vm = daggerViewModel { app.taskVm() }
-//            TasksScreen(Modifier.padding(padding), vm)
-//        }
-//        composable("taskDetail") {
-//            TaskDetailsScreen()
-//        }
-//
-//    }
-//}
-
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    RememberTheme {
-//        MainScreenView()
-//    }
-//}

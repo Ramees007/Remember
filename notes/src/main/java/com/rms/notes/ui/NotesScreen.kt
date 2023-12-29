@@ -10,9 +10,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,59 +26,88 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.rms.notes.NotesUiState
 import com.rms.notes.NotesViewModel
 import com.rms.notes.data.model.NotesItem
 
 @Composable
 fun NotesRoute(
+    modifier: Modifier = Modifier,
     vm: NotesViewModel = hiltViewModel(),
-    onNavigateToNoteDetails: (id: Long) -> Unit,
-    modifier: Modifier
+    navController: NavController
 ) {
     val uiState by vm.notes.collectAsStateWithLifecycle()
-    NotesScreen(
-        modifier = modifier,
-        notesUiState = uiState,
-        onNavigateToNoteDetails = onNavigateToNoteDetails
-    )
+
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                navController.navigate("noteDetail")
+            }) {
+                Icon(Icons.Filled.Add, "Add")
+            }
+        }) { padding ->
+        NotesScreen(
+            modifier = modifier.padding(padding),
+            notesUiState = uiState,
+            onNavigateToNoteDetails = { noteId ->
+                navController.navigate("noteDetail?noteId=$noteId")
+            }
+        )
+    }
 }
 
 @Composable
 fun NotesScreen(
-    notesUiState: NotesUiState,
     modifier: Modifier,
+    notesUiState: NotesUiState,
     onNavigateToNoteDetails: (id: Long) -> Unit
 ) {
-    Column(modifier = modifier) {
-        when (notesUiState) {
-            NotesUiState.Loading -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            is NotesUiState.Notes -> {
-                if (notesUiState.notes.isEmpty()) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Text(text = "No Notes found")
-                    }
-                } else {
-                    Notes(
-                        notes = notesUiState.notes,
-                        onNavigateToNoteDetails = onNavigateToNoteDetails
-                    )
-                }
-            }
+    when (notesUiState) {
+        NotesUiState.Loading -> {
+            Loader(modifier)
         }
+
+        is NotesUiState.Notes -> {
+            NotesWrapper(
+                modifier = modifier,
+                notes = notesUiState.notes,
+                onNavigateToNoteDetails = onNavigateToNoteDetails
+            )
+        }
+    }
+}
+
+@Composable
+fun Loader(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun NotesWrapper(
+    modifier: Modifier = Modifier,
+    notes: List<NotesItem>,
+    onNavigateToNoteDetails: (Long) -> Unit
+) {
+    if (notes.isEmpty()) {
+        Column(
+            modifier = modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = "No Notes found")
+        }
+    } else {
+        Notes(
+            notes = notes,
+            onNavigateToNoteDetails = onNavigateToNoteDetails
+        )
     }
 }
 

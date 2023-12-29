@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.CheckCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.ramees.domain.TaskItem
 import com.ramees.domain.TaskStatus
 import com.rms.tasks.presentation.TasksUiState
@@ -33,27 +35,39 @@ import com.rms.ui.theme.LightRed
 
 @Composable
 fun TasksRoute(
+    modifier: Modifier = Modifier,
     vm: TasksViewModel = hiltViewModel(),
-    onNavigateToTaskDetail: (taskId: Long) -> Unit,
-    modifier: Modifier
+    navController: NavController
 ) {
     val uiState by vm.flow.collectAsStateWithLifecycle()
-    TasksScreen(
-        uiState = uiState,
-        modifier = modifier,
-        onCheckedChanged = vm::onCheckedChanged,
-        onNavigateToTaskDetail = onNavigateToTaskDetail,
-        onDeleteTask = vm::onDelete
-    )
+
+    Scaffold(
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                navController.navigate("taskDetail")
+            }) {
+                Icon(Icons.Filled.Add, "Add")
+            }
+        }) { padding ->
+        TasksScreen(
+            modifier = modifier.padding(padding),
+            uiState = uiState,
+            onCheckedChanged = vm::onCheckedChanged,
+            onNavigateToTaskDetail = {
+                navController.navigate("taskDetail?taskId=$it")
+            },
+            onDeleteTask = vm::onDelete
+        )
+    }
 }
 
 @Composable
 fun TasksScreen(
+    modifier: Modifier,
     uiState: TasksUiState,
     onCheckedChanged: (Long, Boolean) -> Unit,
     onNavigateToTaskDetail: (taskId: Long) -> Unit,
-    onDeleteTask: (Long) -> Unit,
-    modifier: Modifier
+    onDeleteTask: (Long) -> Unit
 ) {
     Column(
         modifier = modifier
