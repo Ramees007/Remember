@@ -1,8 +1,9 @@
-package com.rms.notes
+package com.rms.notes.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rms.domain.GetNotesUseCase
+import com.rms.notes.presentation.NotesUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map

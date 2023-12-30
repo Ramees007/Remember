@@ -27,8 +27,8 @@ class TasksUsecaseImpl @Inject constructor(private val taskRepository: TaskRepos
         }
     }
 
-    override suspend fun insert(txt: String, localDate: String?) {
-        withContext(Dispatchers.IO) {
+    override suspend fun insert(txt: String, localDate: String?): Long {
+        return withContext(Dispatchers.IO) {
             taskRepository.insert(txt, localDate)
         }
     }

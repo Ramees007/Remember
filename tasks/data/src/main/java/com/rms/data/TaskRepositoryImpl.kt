@@ -3,7 +3,6 @@ package com.rms.data
 import com.rms.db.dao.TaskDao
 import com.rms.db.model.TaskDbItem
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
@@ -13,8 +12,8 @@ class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
         return dao.getAll()
     }
 
-    override suspend fun insert(txt: String, localDate: String?) {
-        dao.insertAll(
+    override suspend fun insert(txt: String, localDate: String?): Long {
+        return dao.insert(
             TaskDbItem(
                 task = txt,
                 date = localDate,

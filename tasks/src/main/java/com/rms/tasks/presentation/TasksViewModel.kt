@@ -23,13 +23,25 @@ class TasksViewModel @Inject constructor(private val tasksUsecase: TasksUsecase)
         initialValue = TasksUiState.Loading
     )
 
-    fun onCheckedChanged(id: Long, isChecked: Boolean) {
+    fun handleIntent(intent: TasksUiIntent) {
+        when (intent) {
+            is TasksUiIntent.Delete -> {
+                onDelete(intent.taskId)
+            }
+
+            is TasksUiIntent.Done -> {
+                onCheckedChanged(intent.taskId, intent.selected)
+            }
+        }
+    }
+
+    private fun onCheckedChanged(id: Long, isChecked: Boolean) {
         viewModelScope.launch {
             tasksUsecase.update(id, isChecked)
         }
     }
 
-    fun onDelete(taskId: Long) {
+    private fun onDelete(taskId: Long) {
         viewModelScope.launch {
             tasksUsecase.delete(taskId)
         }

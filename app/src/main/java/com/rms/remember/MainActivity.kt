@@ -11,20 +11,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
-import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
-import com.rms.notes.ui.NoteDetailsScreen
-import com.rms.notes.ui.NotesRoute
+import com.rms.notes.ui.notesGraph
 import com.rms.remember.bottom_nav.BottomNavItem
 import com.rms.remember.bottom_nav.BottomNavigation
-import com.rms.tasks.ui.TaskDetailsScreen
-import com.rms.tasks.ui.TasksRoute
+import com.rms.tasks.ui.tasksGraph
 import com.rms.ui.theme.RememberTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -82,40 +76,4 @@ fun NavigationGraph(
     }
 }
 
-fun NavGraphBuilder.tasksGraph(navController: NavController) {
-    navigation(startDestination = "tasksList", route = BottomNavItem.Tasks.route) {
-        composable("tasksList") {
-            TasksRoute(
-                navController = navController
-            )
-        }
-        composable(
-            "taskDetail?taskId={taskId}",
-            arguments = listOf(navArgument("taskId") { nullable = true })
-        ) {
-            TaskDetailsScreen(
-                onBack = {
-                    navController.navigateUp()
-                }
-            )
-        }
-    }
-}
 
-fun NavGraphBuilder.notesGraph(navController: NavController) {
-    navigation(startDestination = "notesList", route = BottomNavItem.Notes.route) {
-        composable("notesList") {
-            NotesRoute(
-                navController = navController
-            )
-        }
-        composable(
-            "noteDetail?noteId={noteId}",
-            arguments = listOf(navArgument("noteId") { nullable = true })
-        ) {
-            NoteDetailsScreen(onBack = {
-                navController.navigateUp()
-            })
-        }
-    }
-}

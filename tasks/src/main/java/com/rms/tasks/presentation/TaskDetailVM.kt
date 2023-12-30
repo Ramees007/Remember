@@ -1,12 +1,12 @@
 package com.rms.tasks.presentation
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ramees.domain.TaskItem
+import com.ramees.domain.TaskStatus
 import com.ramees.domain.TasksUsecase
+import com.rms.tasks.ui.TASK_ID_PARAM_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,42 +21,66 @@ class TaskDetailVM @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val taskId: Long? = savedStateHandle.get<String?>("taskId")?.toLongOrNull()
-    var taskDetailText by mutableStateOf("")
-        private set
-
-    private val _taskDate: MutableStateFlow<String?> = MutableStateFlow(null)
-    val taskDate: StateFlow<String?>
-        get() = _taskDate
-
-    private val _saveState: MutableStateFlow<Unit?> = MutableStateFlow(null)
-    val saveState: StateFlow<Unit?>
-        get() = _saveState
+    private val _taskState: MutableStateFlow<TaskDetailUiState> = MutableStateFlow(
+        TaskDetailUiState(
+            taskId = savedStateHandle.get<String?>(TASK_ID_PARAM_KEY)?.toLongOrNull()
+        )
+    )
+    val taskState: StateFlow<TaskDetailUiState>
+        get() = _taskState
 
     init {
-        viewModelScope.launch {
-            val task = taskId?.let { taskId ->
-                tasksUsecase.getTask(taskId)
+        fetchTask()
+    }
+
+    fun handleIntent(intent: TaskDetailIntent) {
+        when (intent) {
+            is TaskDetailIntent.UpdateTask -> {
+                updateText(intent.task)
             }
-            taskDetailText = task?.task.orEmpty()
-            _taskDate.value = task?.date
+
+            is TaskDetailIntent.SetDate -> {
+                setDate(intent.dateStr)
+            }
         }
     }
 
-    fun save() {
+    private fun fetchTask() {
         viewModelScope.launch {
-            taskId?.let {
-                tasksUsecase.update(it, taskDetailText, taskDate.value)
-            } ?: tasksUsecase.insert(taskDetailText, taskDate.value)
-            _saveState.emit(Unit)
+            val taskId = _taskState.value.taskId ?: return@launch
+            tasksUsecase.getTask(taskId)?.let { task ->
+                _taskState.emit(
+                    _taskState.value.copy(
+                        taskId = task.id,
+                        date = task.date,
+                        taskStr = task.task
+                    )
+                )
+            }
         }
     }
 
-    fun setTime(localDate: LocalDate) {
-        _taskDate.value = localDate.toDateString()
+    private fun setDate(localDate: LocalDate) {
+        val taskDate = localDate.toDateString()
+        _taskState.tryEmit(_taskState.value.copy(date = taskDate))
+        save(_taskState.value.taskStr, taskDate)
     }
 
-    fun updateText(txt: String) {
-        taskDetailText = txt
+    private fun updateText(txt: String) {
+        _taskState.tryEmit(_taskState.value.copy(taskStr = txt))
+        save(txt, _taskState.value.date)
+    }
+
+    private fun save(taskTxt: String, taskDate: String?) {
+        viewModelScope.launch {
+            val task = _taskState.value
+            val taskId = task.taskId
+            taskId?.let {
+                tasksUsecase.update(it, taskTxt, taskDate)
+            } ?: run {
+                val taskId = tasksUsecase.insert(taskTxt, taskDate)
+                _taskState.emit(_taskState.value.copy(taskId = taskId))
+            }
+        }
     }
 }

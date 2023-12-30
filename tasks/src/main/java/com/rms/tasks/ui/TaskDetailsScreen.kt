@@ -10,9 +10,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.rms.tasks.presentation.TaskDetailVM
+import com.rms.tasks.presentation.TaskDetailIntent
+import com.rms.tasks.presentation.TaskDetailUiState
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
@@ -23,53 +23,29 @@ import java.time.LocalDate
 
 @Composable
 fun TaskDetailsScreen(
-    vm: TaskDetailVM = hiltViewModel(),
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    uiState: TaskDetailUiState,
+    onEvent: (TaskDetailIntent) -> Unit
 ) {
-    val dateState = vm.taskDate.collectAsStateWithLifecycle()
-    val text = vm.taskDetailText
-    val saveState = vm.saveState.collectAsStateWithLifecycle()
-
-    if (saveState.value != null) {
-        LaunchedEffect(key1 = saveState.value) {
-            onBack()
-        }
-    }
 
     Column {
         Toolbar(
             onBack = onBack,
-            dateState = dateState,
+            dateStr = uiState.date,
             onDateSet = {
-                vm.setTime(it)
+                onEvent(TaskDetailIntent.SetDate(it))
             }
         )
         TextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
-            text = text,
+            text = uiState.taskStr,
             onUpdateTask = {
-                vm.updateText(it)
+                onEvent(TaskDetailIntent.UpdateTask(it))
             }
         )
         Spacer(modifier = Modifier.weight(1f))
-        Button(
-            enabled = text.isNotEmpty(),
-            colors = ButtonDefaults.textButtonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                disabledContainerColor = MaterialTheme.colorScheme.scrim
-            ),
-            modifier = Modifier
-                .height(48.dp)
-                .fillMaxWidth(),
-            onClick = {
-                vm.save()
-            },
-            shape = RectangleShape
-        ) {
-            Text(text = "Save", color = MaterialTheme.colorScheme.onPrimary)
-        }
     }
 }
 
@@ -90,7 +66,7 @@ fun TextField(
 fun Toolbar(
     modifier: Modifier = Modifier,
     onBack: () -> Unit,
-    dateState: State<String?>,
+    dateStr: String?,
     onDateSet: (LocalDate) -> Unit
 ) {
     val dialogState = rememberMaterialDialogState()
@@ -107,8 +83,7 @@ fun Toolbar(
         )
 
         Spacer(modifier = Modifier.weight(1f))
-        val date = dateState.value
-        if (date.isNullOrEmpty()) {
+        if (dateStr.isNullOrEmpty()) {
             Icon(
                 imageVector = Icons.Outlined.DateRange,
                 tint = MaterialTheme.colorScheme.onBackground,
@@ -120,19 +95,19 @@ fun Toolbar(
                     }
             )
         } else {
-            Text(text = date, modifier = Modifier.clickable {
+            Text(text = dateStr, modifier = Modifier.clickable {
                 dialogState.show()
             })
         }
     }
 
-    DateTimePickerDialog(dialogState, dateState, onDateSet)
+    DateTimePickerDialog(dialogState, dateStr, onDateSet)
 }
 
 @Composable
 fun DateTimePickerDialog(
     dialogState: MaterialDialogState,
-    dateState: State<String?>,
+    dateStr: String?,
     onDateSet: (LocalDate) -> Unit
 ) {
 
@@ -144,7 +119,7 @@ fun DateTimePickerDialog(
         }
     ) {
         datepicker(
-            initialDate = dateState.value?.takeIf { it.isNotEmpty() }
+            initialDate = dateStr?.takeIf { it.isNotEmpty() }
                 ?.toLocalDate()
                 ?: getCurrentLocalDate()
         ) { date ->

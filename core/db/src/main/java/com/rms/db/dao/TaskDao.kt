@@ -1,7 +1,6 @@
 package com.rms.db.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.rms.db.model.TaskDbItem
@@ -17,7 +16,7 @@ interface TaskDao {
     suspend fun getTask(taskId: Long): TaskDbItem?
 
     @Insert
-    suspend fun insertAll(vararg tasks: TaskDbItem)
+    suspend fun insert(task: TaskDbItem): Long
 
     @Query("UPDATE TaskDbItem SET task=:task, date=:date  WHERE uid=:id")
     suspend fun update(id: Long, task: String, date: String?)

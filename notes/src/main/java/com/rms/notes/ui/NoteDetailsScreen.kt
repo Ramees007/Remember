@@ -7,10 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -25,42 +23,39 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.rms.notes.NoteDetailViewModel
+import com.rms.notes.presentation.NoteDetailIntent
+import com.rms.notes.presentation.NoteDetailsUiState
 
 @Composable
 fun NoteDetailsScreen(
-    viewModel: NoteDetailViewModel = hiltViewModel(),
-    onBack: () -> Unit
+    uiState: NoteDetailsUiState,
+    onBack: () -> Unit,
+    onEvent: (NoteDetailIntent) -> Unit
 ) {
 
-    val saveState = viewModel.saveState.collectAsStateWithLifecycle()
-    LaunchedEffect(key1 = saveState.value) {
-        saveState.value?.let {
+    LaunchedEffect(key1 = uiState.isSaved) {
+        if (uiState.isSaved) {
             onBack()
         }
     }
 
-    val isEdit = viewModel.isEdit
-
     Column {
         Toolbar(
-            isEdit = isEdit,
+            isEdit = uiState.isEdit,
             onBack = onBack,
             onDelete = {
-                viewModel.deleteNote()
+                onEvent(NoteDetailIntent.DeleteNote)
             })
         TextField(
-            value = viewModel.note,
-            onValueChange = { viewModel.updateNote(it) },
+            value = uiState.note,
+            onValueChange = { onEvent(NoteDetailIntent.UpdateNote(it)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.5f)
         )
 
         Button(
-            enabled = viewModel.note.text.isNotEmpty(),
+            enabled = uiState.note.isNotEmpty(),
             colors = ButtonDefaults.textButtonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 disabledContainerColor = MaterialTheme.colorScheme.scrim
@@ -69,7 +64,7 @@ fun NoteDetailsScreen(
                 .height(48.dp)
                 .fillMaxWidth(),
             onClick = {
-                viewModel.saveNote()
+                onEvent(NoteDetailIntent.SaveNote)
             },
             shape = RectangleShape
         ) {
@@ -111,6 +106,4 @@ fun Toolbar(
             )
         }
     }
-
-
 }

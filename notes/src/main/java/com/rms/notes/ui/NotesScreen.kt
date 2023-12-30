@@ -20,29 +20,23 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import com.rms.notes.NotesUiState
-import com.rms.notes.NotesViewModel
+import com.rms.notes.presentation.NotesUiState
 import com.rms.notes.data.model.NotesItem
 
 @Composable
 fun NotesRoute(
     modifier: Modifier = Modifier,
-    vm: NotesViewModel = hiltViewModel(),
-    navController: NavController
+    uiState: NotesUiState,
+    onNavigateToNoteDetails: (id: Long?) -> Unit
 ) {
-    val uiState by vm.notes.collectAsStateWithLifecycle()
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("noteDetail")
+                onNavigateToNoteDetails(null)
             }) {
                 Icon(Icons.Filled.Add, "Add")
             }
@@ -51,7 +45,7 @@ fun NotesRoute(
             modifier = modifier.padding(padding),
             notesUiState = uiState,
             onNavigateToNoteDetails = { noteId ->
-                navController.navigate("noteDetail?noteId=$noteId")
+                onNavigateToNoteDetails(noteId)
             }
         )
     }

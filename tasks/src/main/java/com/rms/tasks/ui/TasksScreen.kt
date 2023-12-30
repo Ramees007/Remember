@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.ramees.domain.TaskItem
 import com.ramees.domain.TaskStatus
+import com.rms.tasks.presentation.TasksUiIntent
 import com.rms.tasks.presentation.TasksUiState
 import com.rms.tasks.presentation.TasksViewModel
 import com.rms.ui.theme.LightGreen
@@ -36,15 +37,15 @@ import com.rms.ui.theme.LightRed
 @Composable
 fun TasksRoute(
     modifier: Modifier = Modifier,
-    vm: TasksViewModel = hiltViewModel(),
-    navController: NavController
+    uiState: TasksUiState,
+    onNavigateToTaskDetail: (taskId: Long?) -> Unit,
+    onEvent: (TasksUiIntent) -> Unit
 ) {
-    val uiState by vm.flow.collectAsStateWithLifecycle()
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate("taskDetail")
+                onNavigateToTaskDetail(null)
             }) {
                 Icon(Icons.Filled.Add, "Add")
             }
@@ -52,11 +53,15 @@ fun TasksRoute(
         TasksScreen(
             modifier = modifier.padding(padding),
             uiState = uiState,
-            onCheckedChanged = vm::onCheckedChanged,
-            onNavigateToTaskDetail = {
-                navController.navigate("taskDetail?taskId=$it")
+            onCheckedChanged = { id, selected ->
+                onEvent(TasksUiIntent.Done(id, selected))
             },
-            onDeleteTask = vm::onDelete
+            onNavigateToTaskDetail = {
+                onNavigateToTaskDetail(it)
+            },
+            onDeleteTask = {
+                onEvent(TasksUiIntent.Delete(it))
+            }
         )
     }
 }

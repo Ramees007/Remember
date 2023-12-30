@@ -8,7 +8,7 @@ interface TasksUsecase {
 
     suspend fun getTask(id: Long): TaskItem?
 
-    suspend fun insert(txt: String, localDate: String?)
+    suspend fun insert(txt: String, localDate: String?): Long
 
     suspend fun update(id: Long, isChecked: Boolean)
 
