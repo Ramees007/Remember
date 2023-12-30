@@ -3,22 +3,22 @@ package com.rms.remember
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
-import com.rms.notes.NotesScreen
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.rms.notes.ui.notesGraph
 import com.rms.remember.bottom_nav.BottomNavItem
 import com.rms.remember.bottom_nav.BottomNavigation
-import com.rms.tasks.ui.TaskDetailsScreen
-import com.rms.tasks.ui.TasksRoute
+import com.rms.tasks.ui.tasksGraph
 import com.rms.ui.theme.RememberTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -46,76 +46,34 @@ fun FullScreenGraph() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            MainScreenView() {
-                navController.navigate("taskDetail")
-            }
-        }
-        composable("taskDetail") {
-            TaskDetailsScreen()
+            MainScreenView()
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreenView(onNavigateToAddTask: () -> Unit) {
+fun MainScreenView() {
     val navController = rememberNavController()
     Scaffold(
-        bottomBar = { BottomNavigation(navController = navController) },
-        floatingActionButton = {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            FloatingActionButton(onClick = {
-                when (navBackStackEntry?.destination?.route) {
-
-                    BottomNavItem.Tasks.route -> {
-                        onNavigateToAddTask()
-                    }
-
-                    BottomNavItem.Notes.route -> {
-
-                    }
-                }
-            }) {
-                Icon(Icons.Filled.Add, "Add")
-            }
-        }
+        bottomBar = { BottomNavigation(navController = navController) }
     ) {
-        NavigationGraph(navController = navController, padding = it)
+        Box(modifier = Modifier.padding(it)) {
+            NavigationGraph(
+                navController = navController
+            )
+        }
     }
 }
 
 
 @Composable
-fun NavigationGraph(navController: NavHostController, padding: PaddingValues) {
+fun NavigationGraph(
+    navController: NavHostController
+) {
     NavHost(navController = navController, startDestination = BottomNavItem.Tasks.route) {
-
-        //tasksGraph(navController, padding, app)
-        composable(BottomNavItem.Tasks.route) {
-            TasksRoute(modifier = Modifier.padding(padding))
-        }
-        composable(BottomNavItem.Notes.route) {
-            NotesScreen(Modifier.padding(padding))
-        }
+        tasksGraph(navController)
+        notesGraph(navController)
     }
 }
 
-//fun NavGraphBuilder.tasksGraph(navController: NavController, padding: PaddingValues, app: Context) {
-//    navigation(startDestination = BottomNavItem.Tasks.route, route = "tasksGraph") {
-//        composable(BottomNavItem.Tasks.route) {
-//            val vm = daggerViewModel { app.taskVm() }
-//            TasksScreen(Modifier.padding(padding), vm)
-//        }
-//        composable("taskDetail") {
-//            TaskDetailsScreen()
-//        }
-//
-//    }
-//}
 
-//@Preview(showBackground = true)
-//@Composable
-//fun DefaultPreview() {
-//    RememberTheme {
-//        MainScreenView()
-//    }
-//}
