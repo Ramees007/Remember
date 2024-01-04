@@ -1,12 +1,13 @@
 package com.ramees.domain
 
+import com.rms.data.model.TaskEntity
 import kotlinx.coroutines.flow.Flow
 
-interface TasksUsecase {
+interface TasksUseCase {
 
-    fun getAllTasks(): Flow<List<TaskItem>>
+    fun getAllTasks(): Flow<List<TaskEntity>>
 
-    suspend fun getTask(id: Long): TaskItem?
+    suspend fun getTask(id: Long): TaskEntity?
 
     suspend fun insert(txt: String, localDate: String?): Long
 

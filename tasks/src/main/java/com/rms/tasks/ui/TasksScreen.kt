@@ -22,14 +22,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
-import com.ramees.domain.TaskItem
-import com.ramees.domain.TaskStatus
+import com.rms.tasks.model.TaskItem
+import com.rms.tasks.model.TaskStatus
 import com.rms.tasks.presentation.TasksUiIntent
 import com.rms.tasks.presentation.TasksUiState
-import com.rms.tasks.presentation.TasksViewModel
 import com.rms.ui.theme.LightGreen
 import com.rms.ui.theme.LightRed
 

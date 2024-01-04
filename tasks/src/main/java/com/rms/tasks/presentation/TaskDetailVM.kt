@@ -3,9 +3,7 @@ package com.rms.tasks.presentation
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ramees.domain.TaskItem
-import com.ramees.domain.TaskStatus
-import com.ramees.domain.TasksUsecase
+import com.ramees.domain.TasksUseCase
 import com.rms.tasks.ui.TASK_ID_PARAM_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TaskDetailVM @Inject constructor(
-    private val tasksUsecase: TasksUsecase,
+    private val tasksUsecase: TasksUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

@@ -1,23 +1,22 @@
 package com.rms.tasks.di
 
-import com.ramees.domain.TasksUsecase
-import com.ramees.domain.TasksUsecaseImpl
+import com.ramees.domain.TasksUseCase
+import com.ramees.domain.TasksUseCaseImpl
 import com.rms.data.TaskRepository
-import com.rms.data.TaskRepositoryImpl
-import dagger.Binds
+import com.rms.db.dao.TaskDao
+import com.rms.tasks.repository.TaskRepositoryImpl
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class TasksModule {
+object TasksModule {
 
-    @Binds
-    abstract fun bindRepo(
-        repo: TaskRepositoryImpl
-    ): TaskRepository
+    @Provides
+    fun providesRepo(dao: TaskDao): TaskRepository = TaskRepositoryImpl(dao)
 
-    @Binds
-    abstract fun bindUsecase(usecase: TasksUsecaseImpl): TasksUsecase
+    @Provides
+    fun providesUseCase(repo: TaskRepository): TasksUseCase = TasksUseCaseImpl(repo)
 }

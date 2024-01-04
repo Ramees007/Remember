@@ -1,6 +1,5 @@
 package com.rms.tasks.presentation
 
-import com.ramees.domain.TaskItem
 import java.time.LocalDate
 
 data class TaskDetailUiState(
