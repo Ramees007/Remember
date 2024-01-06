@@ -9,8 +9,6 @@ data class NoteDetailsUiState(
 
 sealed interface NoteDetailIntent {
 
-    object SaveNote : NoteDetailIntent
-
     object DeleteNote : NoteDetailIntent
 
     data class UpdateNote(val note: String) : NoteDetailIntent

@@ -41,10 +41,6 @@ class NoteDetailViewModel @Inject constructor(
                 deleteNote()
             }
 
-            NoteDetailIntent.SaveNote -> {
-                saveNote()
-            }
-
             is NoteDetailIntent.UpdateNote -> {
                 updateNote(intent.note)
             }
@@ -53,14 +49,9 @@ class NoteDetailViewModel @Inject constructor(
 
     private fun updateNote(newNote: String) {
         _state.tryEmit(_state.value.copy(note = newNote))
-    }
-
-    private fun saveNote() {
         viewModelScope.launch {
-            val noteId = _state.value.noteId
-            val note = _state.value.note
-            saveNoteUseCase.saveNote(note, noteId)
-            _state.emit(_state.value.copy(isSaved = true))
+            val noteId = saveNoteUseCase.saveNote(newNote, _state.value.noteId)
+            _state.tryEmit(_state.value.copy(noteId = noteId))
         }
     }
 

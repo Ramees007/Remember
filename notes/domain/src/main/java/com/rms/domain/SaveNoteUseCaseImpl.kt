@@ -6,8 +6,8 @@ import kotlinx.coroutines.withContext
 
 class SaveNoteUseCaseImpl(private val notesRepository: NotesRepository) : SaveNoteUseCase {
 
-    override suspend fun saveNote(note: String, id: Long?) {
-        withContext(Dispatchers.IO) {
+    override suspend fun saveNote(note: String, id: Long?): Long {
+        return withContext(Dispatchers.IO) {
             notesRepository.saveNote(note, id)
         }
     }

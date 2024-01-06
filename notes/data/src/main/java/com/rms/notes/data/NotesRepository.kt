@@ -7,7 +7,7 @@ interface NotesRepository {
 
     fun getNotes(): Flow<List<NotesItem>>
 
-    suspend fun saveNote(note: String, id: Long?)
+    suspend fun saveNote(note: String, id: Long?): Long
 
     suspend fun getNote(noteId: Long): NotesItem?
 
