@@ -2,14 +2,17 @@ package com.ramees.domain
 
 import com.rms.data.TaskRepository
 import com.rms.data.model.TaskEntity
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import toLocalDate
 
-class TasksUseCaseImpl constructor(private val taskRepository: TaskRepository) :
+class TasksUseCaseImpl constructor(
+    private val taskRepository: TaskRepository,
+    private val ioDispatcher: CoroutineDispatcher
+) :
     TasksUseCase {
 
     override fun getAllTasks(): Flow<List<TaskEntity>> {
@@ -18,35 +21,35 @@ class TasksUseCaseImpl constructor(private val taskRepository: TaskRepository) :
                 .sortedWith(compareBy(nullsLast()) { task ->
                     task.date.takeIf { !it.isNullOrEmpty() }?.toLocalDate()
                 })
-        }.flowOn(Dispatchers.IO)
+        }.flowOn(ioDispatcher)
     }
 
     override suspend fun getTask(id: Long): TaskEntity? {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             taskRepository.getTask(id)
         }
     }
 
     override suspend fun insert(txt: String, localDate: String?): Long {
-        return withContext(Dispatchers.IO) {
+        return withContext(ioDispatcher) {
             taskRepository.insert(txt, localDate)
         }
     }
 
     override suspend fun update(id: Long, isChecked: Boolean) {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             taskRepository.update(id, isChecked)
         }
     }
 
     override suspend fun update(id: Long, task: String, localDate: String?) {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             taskRepository.update(id, task, localDate)
         }
     }
 
     override suspend fun delete(taskId: Long) {
-        withContext(Dispatchers.IO) {
+        withContext(ioDispatcher) {
             taskRepository.delete(taskId)
         }
     }

@@ -43,11 +43,12 @@ private fun NavGraphBuilder.noteDetailsScreen(navController: NavController) {
         arguments = listOf(navArgument(NOTE_ID_PARAM_KEY) { nullable = true })
     ) {
         val viewModel: NoteDetailViewModel = hiltViewModel()
-        val uiState by viewModel.state.collectAsStateWithLifecycle()
+        val uiState by viewModel.viewState
         NoteDetailsScreen(
             uiState = uiState,
+            effectFlow = viewModel.effect,
             onBack = navController::navigateUp,
-            onEvent = viewModel::handleIntent
+            onEvent = viewModel::setEvent
         )
     }
 }
