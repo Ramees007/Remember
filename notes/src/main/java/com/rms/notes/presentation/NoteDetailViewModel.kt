@@ -8,6 +8,7 @@ import com.rms.domain.DeleteNoteUseCase
 import com.rms.domain.GetNoteUseCase
 import com.rms.domain.SaveNoteUseCase
 import com.rms.notes.ui.NOTE_ID_PARAM_KEY
+import com.rms.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,69 +17,54 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NoteDetailViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val saveNoteUseCase: SaveNoteUseCase,
     private val getNoteUseCase: GetNoteUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase
-) : ViewModel() {
-
-    private val _state: MutableStateFlow<NoteDetailsUiState> =
-        MutableStateFlow(
-            NoteDetailsUiState(
-                noteId = savedStateHandle.get<String?>(NOTE_ID_PARAM_KEY)?.toLongOrNull()
-            )
-        )
-    val state: StateFlow<NoteDetailsUiState>
-        get() = _state
+) : BaseViewModel<NoteDetailIntent, NoteDetailsUiState, NoteDetailEffect>() {
 
     init {
+        setState { copy(noteId = savedStateHandle.get<String?>(NOTE_ID_PARAM_KEY)?.toLongOrNull()) }
         fetchNote()
     }
 
-    fun handleIntent(intent: NoteDetailIntent) {
-        when (intent) {
+    override fun setInitialState() = NoteDetailsUiState()
+
+    override fun handleEvents(event: NoteDetailIntent) {
+        when (event) {
             NoteDetailIntent.DeleteNote -> {
                 deleteNote()
             }
 
-            NoteDetailIntent.SaveNote -> {
-                saveNote()
-            }
-
             is NoteDetailIntent.UpdateNote -> {
-                updateNote(intent.note)
+                updateNote(event.note)
             }
         }
     }
 
     private fun updateNote(newNote: String) {
-        _state.tryEmit(_state.value.copy(note = newNote))
-    }
-
-    private fun saveNote() {
+        setState { copy(note = newNote) }
         viewModelScope.launch {
-            val noteId = _state.value.noteId
-            val note = _state.value.note
-            saveNoteUseCase.saveNote(note, noteId)
-            _state.emit(_state.value.copy(isSaved = true))
+            val noteId = saveNoteUseCase.saveNote(newNote, viewState.value.noteId)
+            setState { copy(noteId = noteId) }
         }
     }
 
     private fun deleteNote() {
-        val noteId = _state.value.noteId ?: return
+        val noteId = viewState.value.noteId ?: return
         viewModelScope.launch {
             deleteNoteUseCase.deleteNote(noteId)
-            _state.emit(_state.value.copy(isSaved = true))
+            setEffect { NoteDetailEffect.NavigateBack }
         }
     }
 
     private fun fetchNote() {
         viewModelScope.launch {
-            val noteId = _state.value.noteId
+            val noteId = viewState.value.noteId
             noteId?.let {
                 val noteItem = getNoteUseCase.getNote(it)
                 noteItem?.let {
-                    _state.emit(_state.value.copy(note = noteItem.note, isEdit = true))
+                    setState { copy(note = noteItem.note, isEdit = true) }
                 }
             }
         }

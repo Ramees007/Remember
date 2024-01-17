@@ -18,8 +18,8 @@ class NotesRepositoryImpl(private val notesDao: NotesDao) : NotesRepository {
         }
     }
 
-    override suspend fun saveNote(note: String, id: Long?) {
-        notesDao.insertAll(NotesDbItem(id ?: 0, note))
+    override suspend fun saveNote(note: String, id: Long?): Long {
+        return notesDao.insert(NotesDbItem(id ?: 0, note))
     }
 
     override suspend fun getNote(noteId: Long): NotesItem? {

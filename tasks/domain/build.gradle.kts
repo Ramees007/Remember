@@ -1,16 +1,9 @@
 plugins {
-    id("com.rms.android-library.plugin")
-    id("com.rms.android-hilt.plugin")
-}
-
-android {
-    namespace = "com.ramees.domain"
+    id("com.rms.java-library.plugin")
 }
 
 dependencies {
-    api(project(":tasks:data"))
     implementation(project(":core:util"))
+    api(project(":tasks:data"))
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.test.espresso.core)
 }

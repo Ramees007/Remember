@@ -1,5 +1,6 @@
-package com.ramees.domain
+package com.rms.tasks.model
 
+import com.rms.data.model.TaskEntity
 import com.rms.db.model.TaskDbItem
 import toLocalDate
 import java.time.LocalDate
@@ -18,9 +19,11 @@ enum class TaskStatus {
     PastUnDone, TodaysUnDone, Done, Future
 }
 
-fun TaskDbItem.toDomainModel() = TaskItem(uid, task, date.orEmpty(), isDone, extractStatus())
+fun TaskDbItem.toEntity() = TaskEntity(uid, task, date.orEmpty(), isDone, doneDate)
 
-private fun TaskDbItem.extractStatus(): TaskStatus = when {
+fun TaskEntity.toTaskItem() = TaskItem(id, task, date.orEmpty(), isDone, extractStatus())
+
+private fun TaskEntity.extractStatus(): TaskStatus = when {
     isDone -> TaskStatus.Done
     date.isNullOrEmpty() -> TaskStatus.Future
     date!!.toLocalDate().isEqual(LocalDate.now()) -> TaskStatus.TodaysUnDone

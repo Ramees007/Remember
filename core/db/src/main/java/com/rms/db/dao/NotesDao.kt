@@ -15,10 +15,10 @@ interface NotesDao {
     fun getNotes(): Flow<List<NotesDbItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(vararg tasks: NotesDbItem)
+    suspend fun insert(tasks: NotesDbItem): Long
 
     @Query("SELECT * from NotesDbItem WHERE uid=:id LIMIT 1")
-    suspend fun getNote(id:Long): NotesDbItem?
+    suspend fun getNote(id: Long): NotesDbItem?
 
     @Query("DELETE FROM NotesDbItem WHERE uid = :id")
     suspend fun delete(id: Long)

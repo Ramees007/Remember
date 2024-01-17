@@ -1,12 +1,7 @@
 plugins {
-    id("com.rms.android-library.plugin")
-    id("com.rms.android-hilt.plugin")
+    id("com.rms.java-library.plugin")
 }
 
-android {
-    namespace = "com.rms.data"
-}
-
-dependencies {
-    api(project(":core:db"))
+dependencies{
+    api(libs.coroutines)
 }

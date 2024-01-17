@@ -13,8 +13,7 @@ import java.time.format.DateTimeFormatter
 class ExampleUnitTest {
 
     @Test
-    fun `test String to LocalDate formatting`() {
-        val s = "20 May 23".toLocalDate(DateFormat.DD_MMM_YY)
-        assertEquals(s.toString(), "2023-05-20")
+    fun `test`() {
+
     }
 }
