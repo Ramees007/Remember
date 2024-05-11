@@ -13,6 +13,4 @@ dependencies {
     implementation project(':core:db')
     implementation project(':notes:domain')
     implementation project(':core:di')
-
-    implementation libs.androidx.hilt.navigation.compose
 }

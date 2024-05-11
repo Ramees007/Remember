@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.rms.feature.menu.presentation.ui.menuGraph
 import com.rms.notes.ui.notesGraph
 import com.rms.remember.bottom_nav.BottomNavItem
 import com.rms.remember.bottom_nav.BottomNavigation
@@ -73,6 +74,7 @@ fun NavigationGraph(
     NavHost(navController = navController, startDestination = BottomNavItem.Tasks.route) {
         tasksGraph(navController)
         notesGraph(navController)
+        menuGraph(navController)
     }
 }
 

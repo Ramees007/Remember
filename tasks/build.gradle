@@ -15,7 +15,6 @@ dependencies {
     implementation project(':core:di')
     api project(':tasks:domain')
 
-    implementation libs.androidx.hilt.navigation.compose
     implementation libs.datetime
 
 }
