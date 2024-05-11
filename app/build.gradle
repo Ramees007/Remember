@@ -1,7 +1,6 @@
 plugins {
     id 'com.rms.android-application.plugin'
     id 'kotlin-kapt'
-    id 'com.google.dagger.hilt.android'
     id 'com.rms.app-compose.plugin'
     id 'com.rms.android-hilt.plugin'
 }
