@@ -8,18 +8,14 @@ import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
-internal fun CommonExtension<*, *, *, *>.configureKotlin() {
+internal fun CommonExtension<*, *, *, *, *>.configureKotlin() {
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
-internal fun CommonExtension<*, *, *, *>.configureAndroidCommon() {
+internal fun CommonExtension<*, *, *, *, *>.configureAndroidCommon() {
     compileSdk = COMPILE_SDK
 
     defaultConfig {
@@ -31,12 +27,8 @@ const val MIN_SDK = 26
 const val COMPILE_SDK = 33
 const val TARGET_SDK = 33
 
-fun CommonExtension<*, *, *, *>.kotlinOptions(block: KotlinJvmOptions.() -> Unit) {
-    (this as ExtensionAware).extensions.configure("kotlinOptions", block)
-}
-
 internal fun Project.configureAndroidCompose(
-    commonExtension: CommonExtension<*, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *>,
 ) {
 
     commonExtension.apply {
@@ -46,7 +38,7 @@ internal fun Project.configureAndroidCompose(
         }
 
         composeOptions {
-            kotlinCompilerExtensionVersion = "1.4.0"
+            kotlinCompilerExtensionVersion = "1.5.4"
         }
 
         dependencies {

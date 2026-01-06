@@ -10,11 +10,15 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.44.2'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.0'
+        classpath libs.hilt.android.gradle.plugin
+        classpath libs.kgp
     }
 
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+plugins {
+    id "com.google.devtools.ksp" version "1.9.20-1.0.14" apply false
+}
 
 
 
