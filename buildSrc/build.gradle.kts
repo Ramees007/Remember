@@ -4,8 +4,10 @@ plugins {
 
 dependencies {
     implementation(libs.agp)
+    implementation(libs.agp.api)
     implementation(libs.kgp)
     implementation(libs.javapoet)
+    gradleApi()
 }
 
 gradlePlugin {

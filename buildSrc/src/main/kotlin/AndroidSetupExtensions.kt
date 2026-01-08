@@ -3,19 +3,17 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
-internal fun CommonExtension<*, *, *, *, *>.configureKotlin() {
+internal fun CommonExtension<*, *, *, *, *, *>.configureKotlin() {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
-internal fun CommonExtension<*, *, *, *, *>.configureAndroidCommon() {
+internal fun CommonExtension<*, *, *, *, *, *>.configureAndroidCommon() {
     compileSdk = COMPILE_SDK
 
     defaultConfig {
@@ -27,8 +25,10 @@ const val MIN_SDK = 26
 const val COMPILE_SDK = 33
 const val TARGET_SDK = 33
 
+const val APP_PACKAGE_ID = "com.rms.remember"
+
 internal fun Project.configureAndroidCompose(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
 
     commonExtension.apply {

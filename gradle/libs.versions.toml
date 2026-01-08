@@ -1,7 +1,6 @@
 [versions]
-desugar-jdk-libs = "2.1.5"
-agp = "8.2.0"
-kgp = "1.9.20"
+agp = "8.13.2"
+kotlin = "1.9.20"
 javapoet = "1.13.0"
 room = "2.5.2"
 hilt-compiler = "2.51.1"
@@ -11,6 +10,7 @@ androidx-core-ktx = "1.7.0"
 androidx-appcompat = "1.5.1"
 google-material = "1.7.0"
 javaxInject = "1"
+ksp = "1.9.20-1.0.14"
 
 #compose
 hilt-navigation-compose = "1.0.0"
@@ -27,6 +27,8 @@ androidxAnnotation = "1.7.1"
 junit = "4.13.2"
 androidx-junit = "1.1.5"
 androidx-test-espresso-core = "3.5.0"
+kotlinStdlib = "2.0.21"
+kotlinTest = "2.0.21"
 
 
 [libraries]
@@ -34,10 +36,10 @@ datetime = { module = "io.github.vanpra.compose-material-dialogs:datetime", vers
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
-desugar-jdk-libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar-jdk-libs" }
-agp = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+agp = { group = "com.android.tools.build", name= "gradle", version.ref = "agp" }
+agp-api = { group = "com.android.tools.build", name= "gradle-api", version.ref = "agp" }
 hilt-android-gradle-plugin = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt-compiler" }
-kgp = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kgp" }
+kgp = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
 coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
@@ -65,5 +67,9 @@ androidx-navigation-compose = { module = "androidx.navigation:navigation-compose
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
 androidx-test-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "androidx-test-espresso-core" }
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlinStdlib" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlinTest" }
 
 [plugins]
+android-hilt = { id ="com.google.dagger.hilt.android", version.ref = "hilt-compiler" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
