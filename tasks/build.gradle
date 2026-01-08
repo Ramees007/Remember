@@ -19,7 +19,3 @@ dependencies {
     implementation libs.datetime
 
 }
-
-kapt {
-    correctErrorTypes = true
-}
