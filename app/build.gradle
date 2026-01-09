@@ -34,7 +34,7 @@ dependencies {
     implementation project(':tasks')
     implementation project(':core:db')
     implementation project(':core:di')
-    implementation project(':shared')
+    implementation project(':shared:util')
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     implementation libs.androidx.hilt.navigation.compose

@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    id("com.rms.kmp-core.plugin")
     id("com.android.library")
 }
 
@@ -9,14 +9,6 @@ kotlin {
         // Ensure the artifact name is unique if needed
         publishLibraryVariants("release", "debug")
     }
-
-    jvmToolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
-    }
-
-    iosArm64()
-    iosSimulatorArm64()
-    iosX64()
 
     sourceSets {
         commonMain {
@@ -40,7 +32,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.rms.remember.shared"
+    namespace = "com.rms.remember.shared.util"
     compileSdk = 36
 
     defaultConfig {

@@ -20,7 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.rms.notes.ui.notesGraph
 import com.rms.remember.bottom_nav.BottomNavItem
 import com.rms.remember.bottom_nav.BottomNavigation
-import com.rms.remember.shared.platform
+import com.rms.remember.shared.util.platform
 import com.rms.tasks.ui.tasksGraph
 import com.rms.ui.theme.RememberTheme
 import dagger.hilt.android.AndroidEntryPoint

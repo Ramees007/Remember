@@ -41,6 +41,11 @@ gradlePlugin {
             id = "com.rms.java-library.plugin"
             implementationClass = "JavaLibrarySetupPlugin"
         }
+
+        create("KmpCorePlugin"){
+            id = "com.rms.kmp-core.plugin"
+            implementationClass = "KmpCorePlugin"
+        }
     }
 }
 
