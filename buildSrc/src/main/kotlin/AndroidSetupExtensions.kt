@@ -22,7 +22,7 @@ internal fun CommonExtension<*, *, *, *, *, *>.configureAndroidCommon() {
 }
 
 const val MIN_SDK = 26
-const val COMPILE_SDK = 33
+const val COMPILE_SDK = 36
 const val TARGET_SDK = 33
 
 const val APP_PACKAGE_ID = "com.rms.remember"

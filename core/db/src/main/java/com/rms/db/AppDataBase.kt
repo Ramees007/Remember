@@ -7,7 +7,7 @@ import com.rms.db.dao.TaskDao
 import com.rms.db.model.NotesDbItem
 import com.rms.db.model.TaskDbItem
 
-@Database(entities = [TaskDbItem::class, NotesDbItem::class], version = 1)
+@Database(entities = [TaskDbItem::class, NotesDbItem::class], version = 1, exportSchema = false)
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun taskDao(): TaskDao

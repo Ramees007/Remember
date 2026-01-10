@@ -1,6 +1,7 @@
 plugins {
     id("com.rms.android-library.plugin")
     id("com.rms.module-compose.plugin")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {

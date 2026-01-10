@@ -2,6 +2,7 @@ plugins {
     id("com.rms.android-library.plugin")
     id("com.rms.module-compose.plugin")
     id("com.rms.android-hilt.plugin")
+    alias(libs.plugins.compose.compiler)
 }
 
 android {

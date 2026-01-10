@@ -1,7 +1,6 @@
-package com.rms.db.di
+package com.rms.remember.di
 
 import android.content.Context
-import androidx.room.Room
 import com.rms.db.AppDataBase
 import com.rms.db.dao.NotesDao
 import com.rms.db.dao.TaskDao
@@ -10,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import getDatabaseBuilder
 import javax.inject.Singleton
 
 @Module
@@ -18,11 +18,7 @@ class DbModule {
 
     @Provides
     @Singleton
-    fun provideDb(@ApplicationContext context: Context): AppDataBase = Room.databaseBuilder(
-        context,
-        AppDataBase::class.java,
-        AppDataBase.NAME
-    ).build()
+    fun provideDb(@ApplicationContext context: Context): AppDataBase = getDatabaseBuilder(context).build()
 
     @Provides
     @Singleton

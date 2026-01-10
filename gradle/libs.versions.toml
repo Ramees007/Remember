@@ -1,8 +1,10 @@
 [versions]
 agp = "8.13.2"
-kotlin = "1.9.20"
+kotlin = "2.1.0"
 javapoet = "1.13.0"
-room = "2.5.2"
+room = "2.8.4"
+sqlite = "2.6.2"
+serialization = "1.7.3"
 hilt-compiler = "2.51.1"
 hilt-android = "2.51.1"
 datetime = "0.9.0"
@@ -10,7 +12,7 @@ androidx-core-ktx = "1.7.0"
 androidx-appcompat = "1.5.1"
 google-material = "1.7.0"
 javaxInject = "1"
-ksp = "1.9.20-1.0.14"
+ksp = "2.1.0-1.0.28"
 
 #compose
 hilt-navigation-compose = "1.0.0"
@@ -45,10 +47,17 @@ coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidxAnnotation" }
 
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+
 #room
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+# Optional SQLite Wrapper available in version 2.8.0 and higher
+androidx-room-sqlite-wrapper = { module = "androidx.room:room-sqlite-wrapper", version.ref = "room" }
 
 #hilt
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt-compiler" }
@@ -73,3 +82,7 @@ kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.re
 [plugins]
 android-hilt = { id ="com.google.dagger.hilt.android", version.ref = "hilt-compiler" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+androidx-room = { id = "androidx.room", version.ref = "room" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
