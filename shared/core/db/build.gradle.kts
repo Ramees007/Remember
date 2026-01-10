@@ -23,7 +23,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.rms.db"
+    namespace = "com.rms.shared.core.db"
     compileSdk = 36
 }
 
