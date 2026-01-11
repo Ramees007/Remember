@@ -1,4 +1,7 @@
 plugins {
-    id("com.rms.java-library.plugin")
+    id("com.rms.kmp.app.platforms.plugin")
 }
 
+android {
+    namespace = "com.rms.core.util"
+}

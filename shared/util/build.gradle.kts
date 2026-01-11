@@ -1,6 +1,5 @@
 plugins {
-    id("com.rms.kmp-core.plugin")
-    id("com.android.library")
+    id("com.rms.kmp.app.platforms.plugin")
 }
 
 kotlin {

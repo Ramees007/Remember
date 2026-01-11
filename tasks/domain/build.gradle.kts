@@ -1,9 +1,18 @@
 plugins {
-    id("com.rms.java-library.plugin")
+    id("com.rms.kmp.app.platforms.plugin")
 }
 
-dependencies {
-    implementation(project(":core:util"))
-    api(project(":tasks:data"))
-    testImplementation(libs.junit)
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(project(":core:util"))
+                api(project(":tasks:data"))
+            }
+        }
+    }
+}
+
+android {
+    namespace = "com.rms.tasks.domain"
 }

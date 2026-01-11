@@ -1,6 +1,5 @@
 plugins {
-    id("com.android.library")
-    id("com.rms.kmp-core.plugin")
+    id("com.rms.kmp.app.platforms.plugin")
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room)
 }

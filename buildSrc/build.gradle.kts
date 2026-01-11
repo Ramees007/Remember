@@ -43,8 +43,13 @@ gradlePlugin {
         }
 
         create("KmpCorePlugin"){
-            id = "com.rms.kmp-core.plugin"
+            id = "com.rms.kmp.core.plugin"
             implementationClass = "KmpCorePlugin"
+        }
+
+        create("KmpAppPlatformsPlugin"){
+            id = "com.rms.kmp.app.platforms.plugin"
+            implementationClass = "KmpAppPlatformsPlugin"
         }
     }
 }

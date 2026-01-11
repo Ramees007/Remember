@@ -1,7 +1,17 @@
 plugins {
-    id("com.rms.java-library.plugin")
+    id("com.rms.kmp.app.platforms.plugin")
 }
 
-dependencies {
-    api(project(":notes:data"))
+kotlin {
+    sourceSets {
+        commonMain {
+            dependencies {
+                api(project(":notes:data"))
+            }
+        }
+    }
+}
+
+android {
+    namespace = "com.rms.notes.domain"
 }
