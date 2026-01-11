@@ -1,15 +1,12 @@
-package com.rms.tasks.repository
+package com.rms.data
 
-import com.rms.data.TaskRepository
 import com.rms.data.model.TaskEntity
 import com.rms.db.dao.TaskDao
 import com.rms.db.model.TaskDbItem
-import com.rms.tasks.model.toEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
-class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
+class TaskRepositoryImpl(private val dao: TaskDao) :
     TaskRepository {
 
     override fun getAllTasks(): Flow<List<TaskEntity>> {
@@ -46,3 +43,5 @@ class TaskRepositoryImpl @Inject constructor(private val dao: TaskDao) :
         dao.deleteById(taskId)
     }
 }
+
+fun TaskDbItem.toEntity() = TaskEntity(uid, task, date.orEmpty(), isDone, doneDate)

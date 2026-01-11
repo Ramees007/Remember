@@ -7,7 +7,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(project(":core:util"))
-                api(project(":tasks:data"))
+                api(project(":shared:feature:tasks:data"))
             }
         }
     }
