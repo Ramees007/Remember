@@ -20,6 +20,8 @@ import androidx.navigation.compose.rememberNavController
 import com.rms.notes.ui.notesGraph
 import com.rms.remember.bottom_nav.BottomNavItem
 import com.rms.remember.bottom_nav.BottomNavigation
+import com.rms.remember.di.AppGraph
+import com.rms.remember.di.createAppGraph
 import com.rms.remember.shared.util.platform
 import com.rms.tasks.ui.tasksGraph
 import com.rms.ui.theme.RememberTheme
@@ -28,12 +30,16 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    private lateinit var appGraph: AppGraph
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        appGraph = createAppGraph(this)
         super.onCreate(savedInstanceState)
         setContent {
 
             LaunchedEffect(Unit) {
-                Toast.makeText(this@MainActivity, "Platform: ${platform()}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, "Platform: ${platform()}", Toast.LENGTH_LONG)
+                    .show()
             }
 
             RememberTheme {
@@ -42,7 +48,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FullScreenGraph()
+                    FullScreenGraph(appGraph)
                 }
             }
         }
@@ -50,24 +56,25 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun FullScreenGraph() {
+fun FullScreenGraph(appGraph: AppGraph) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            MainScreenView()
+            MainScreenView(appGraph)
         }
     }
 }
 
 @Composable
-fun MainScreenView() {
+fun MainScreenView(appGraph: AppGraph) {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomNavigation(navController = navController) }
     ) {
         Box(modifier = Modifier.padding(it)) {
             NavigationGraph(
-                navController = navController
+                navController = navController,
+                appGraph = appGraph
             )
         }
     }
@@ -76,10 +83,11 @@ fun MainScreenView() {
 
 @Composable
 fun NavigationGraph(
-    navController: NavHostController
+    navController: NavHostController,
+    appGraph: AppGraph
 ) {
     NavHost(navController = navController, startDestination = BottomNavItem.Tasks.route) {
-        tasksGraph(navController)
+        tasksGraph(navController, appGraph.tasksGraphFactory.createTasksGraph())
         notesGraph(navController)
     }
 }

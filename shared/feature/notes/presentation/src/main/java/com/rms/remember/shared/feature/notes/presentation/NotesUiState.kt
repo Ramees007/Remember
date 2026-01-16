@@ -1,4 +1,4 @@
-package com.rms.notes.presentation
+package com.rms.remember.shared.feature.notes.presentation
 
 import com.rms.notes.data.model.NotesItem
 

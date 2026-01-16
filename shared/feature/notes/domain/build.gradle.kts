@@ -5,13 +5,13 @@ plugins {
 kotlin {
     sourceSets {
         commonMain {
-            dependencies{
-                api(libs.coroutines)
+            dependencies {
+                api(project(":shared:feature:notes:data"))
             }
         }
     }
 }
 
 android {
-    namespace = "com.rms.notes.data"
+    namespace = "com.rms.notes.domain"
 }

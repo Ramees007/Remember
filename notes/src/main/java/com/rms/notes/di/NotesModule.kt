@@ -10,7 +10,7 @@ import com.rms.domain.GetNotesUseCaseImpl
 import com.rms.domain.SaveNoteUseCase
 import com.rms.domain.SaveNoteUseCaseImpl
 import com.rms.notes.data.NotesRepository
-import com.rms.notes.db.NotesRepositoryImpl
+import com.rms.notes.data.db.NotesRepositoryImpl
 import com.rms.remember.core.domain.IoDispatcher
 import dagger.Module
 import dagger.Provides

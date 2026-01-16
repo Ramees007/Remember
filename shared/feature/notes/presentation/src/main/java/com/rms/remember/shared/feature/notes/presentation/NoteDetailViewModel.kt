@@ -1,30 +1,21 @@
-package com.rms.notes.presentation
+package com.rms.remember.shared.feature.notes.presentation
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.SavedStateHandleSaveableApi
 import com.rms.domain.DeleteNoteUseCase
 import com.rms.domain.GetNoteUseCase
 import com.rms.domain.SaveNoteUseCase
-import com.rms.notes.ui.NOTE_ID_PARAM_KEY
-import com.rms.ui.base.BaseViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.rms.remember.core.presentation.base.BaseViewModel
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class NoteDetailViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+class NoteDetailViewModel(
+    private val noteId: Long,
     private val saveNoteUseCase: SaveNoteUseCase,
     private val getNoteUseCase: GetNoteUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase
 ) : BaseViewModel<NoteDetailIntent, NoteDetailsUiState, NoteDetailEffect>() {
 
     init {
-        setState { copy(noteId = savedStateHandle.get<String?>(NOTE_ID_PARAM_KEY)?.toLongOrNull()) }
+        setState { copy(noteId = noteId) }
         fetchNote()
     }
 

@@ -22,9 +22,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.rms.notes.presentation.NoteDetailEffect
-import com.rms.notes.presentation.NoteDetailIntent
-import com.rms.notes.presentation.NoteDetailsUiState
+import com.rms.remember.shared.feature.notes.presentation.NoteDetailEffect
+import com.rms.remember.shared.feature.notes.presentation.NoteDetailIntent
+import com.rms.remember.shared.feature.notes.presentation.NoteDetailsUiState
 import com.rms.ui.base.SIDE_EFFECTS_KEY
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect

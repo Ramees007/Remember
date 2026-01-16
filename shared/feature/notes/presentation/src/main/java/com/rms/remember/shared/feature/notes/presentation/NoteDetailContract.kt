@@ -1,8 +1,8 @@
-package com.rms.notes.presentation
+package com.rms.remember.shared.feature.notes.presentation
 
-import com.rms.ui.base.ViewEvent
-import com.rms.ui.base.ViewSideEffect
-import com.rms.ui.base.ViewState
+import com.rms.remember.core.presentation.base.ViewEvent
+import com.rms.remember.core.presentation.base.ViewSideEffect
+import com.rms.remember.core.presentation.base.ViewState
 
 data class NoteDetailsUiState(
     val isEdit: Boolean = false,

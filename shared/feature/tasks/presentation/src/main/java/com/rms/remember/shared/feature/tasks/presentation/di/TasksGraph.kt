@@ -29,10 +29,6 @@ interface TasksGraph {
 
     @Binds val TaskRepositoryImpl.Bind: TaskRepository
 
-//    @Provides
-//    @Named("ioDispatcher")
-//    fun ioDispatcher(): CoroutineDispatcher = Dispatchers.IO
-
     @Provides
     fun taskDao(db: AppDataBase): TaskDao = db.taskDao()
 

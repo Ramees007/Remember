@@ -23,8 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rms.notes.presentation.NotesUiState
 import com.rms.notes.data.model.NotesItem
+import com.rms.remember.shared.feature.notes.presentation.NotesUiState
 
 @Composable
 fun NotesRoute(

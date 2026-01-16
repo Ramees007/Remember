@@ -1,4 +1,4 @@
-package com.rms.notes.db
+package com.rms.notes.data.db
 
 import com.rms.db.dao.NotesDao
 import com.rms.db.model.NotesDbItem
