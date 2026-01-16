@@ -32,11 +32,6 @@ gradlePlugin {
             implementationClass = "AndroidModuleComposePlugin"
         }
 
-        create("AndroidHiltSetupPlugin") {
-            id = "com.rms.android-hilt.plugin"
-            implementationClass = "AndroidHiltSetupPlugin"
-        }
-
         create("JavaLibrarySetupPlugin"){
             id = "com.rms.java-library.plugin"
             implementationClass = "JavaLibrarySetupPlugin"

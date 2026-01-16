@@ -1,7 +1,6 @@
 plugins {
     id 'com.rms.android-library.plugin'
     id 'com.rms.module-compose.plugin'
-    id 'com.rms.android-hilt.plugin'
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.metro)
 }
@@ -17,7 +16,6 @@ dependencies {
     implementation project(':core:di')
     api project(':shared:feature:tasks:presentation')
 
-    implementation libs.androidx.hilt.navigation.compose
     implementation libs.datetime
 
 }

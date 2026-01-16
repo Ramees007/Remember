@@ -39,5 +39,4 @@ dependencies {
     implementation project(':shared:util')
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    implementation libs.androidx.hilt.navigation.compose
 }

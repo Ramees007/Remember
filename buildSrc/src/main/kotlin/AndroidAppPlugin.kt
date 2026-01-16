@@ -10,7 +10,6 @@ class AndroidAppPlugin : Plugin<Project> {
                 apply("com.android.application")
                 apply("org.jetbrains.kotlin.android")
                 apply("com.google.devtools.ksp")
-                apply("com.rms.android-hilt.plugin")
                 apply("com.rms.app-compose.plugin")
             }
             extensions.configure(ApplicationExtension::class.java) {

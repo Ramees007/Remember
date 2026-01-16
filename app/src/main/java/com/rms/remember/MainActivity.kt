@@ -25,9 +25,7 @@ import com.rms.remember.di.createAppGraph
 import com.rms.remember.shared.util.platform
 import com.rms.tasks.ui.tasksGraph
 import com.rms.ui.theme.RememberTheme
-import dagger.hilt.android.AndroidEntryPoint
 
-//@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var appGraph: AppGraph
