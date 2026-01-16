@@ -27,7 +27,7 @@ import com.rms.tasks.ui.tasksGraph
 import com.rms.ui.theme.RememberTheme
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
+//@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private lateinit var appGraph: AppGraph
@@ -88,7 +88,7 @@ fun NavigationGraph(
 ) {
     NavHost(navController = navController, startDestination = BottomNavItem.Tasks.route) {
         tasksGraph(navController, appGraph.tasksGraphFactory.createTasksGraph())
-        notesGraph(navController)
+        notesGraph(navController, appGraph.notesGraphFactory.createNotesGraph())
     }
 }
 

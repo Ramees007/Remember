@@ -15,7 +15,7 @@ class NoteDetailViewModel(
 ) : BaseViewModel<NoteDetailIntent, NoteDetailsUiState, NoteDetailEffect>() {
 
     init {
-        setState { copy(noteId = noteId) }
+        setState { copy(noteId = this@NoteDetailViewModel.noteId) }
         fetchNote()
     }
 

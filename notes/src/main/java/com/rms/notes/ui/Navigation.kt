@@ -29,7 +29,8 @@ fun NavGraphBuilder.notesGraph(navController: NavController, notesGraph: NotesGr
 
 private fun NavGraphBuilder.notesListScreen(navController: NavController, notesGraph: NotesGraph) {
     composable(NOTES_LIST_ROUTE) {
-        val vm: NotesViewModel = notesGraph.notesViewModel
+        val vm: NotesViewModel =
+            viewModel(factory = notesGraph.notesViewModelFactory)
         val uiState by vm.notes.collectAsStateWithLifecycle()
         NotesRoute(
             uiState = uiState,
@@ -46,8 +47,9 @@ private fun NavGraphBuilder.noteDetailsScreen(
         NOTES_DETAIL_ROUTE_PATTERN,
         arguments = listOf(navArgument(NOTE_ID_PARAM_KEY) { nullable = true })
     ) {
+        val noteId = it.arguments?.getLong(NOTE_ID_PARAM_KEY) ?: 0
         val viewModel: NoteDetailViewModel =
-            viewModel(factory = notesGraph.noteDetailsViewModelFactoryFactory.create(1))
+            viewModel(factory = notesGraph.noteDetailsViewModelFactoryFactory.create(noteId = noteId))
 
         val uiState by viewModel.viewState.collectAsStateWithLifecycle()
         NoteDetailsScreen(

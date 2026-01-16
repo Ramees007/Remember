@@ -1,7 +1,5 @@
 package com.rms.tasks.ui
 
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
@@ -43,7 +41,9 @@ private fun NavGraphBuilder.taskDetailScreen(navController: NavController, taskG
         TASKS_DETAIL_ROTE_PATTERN,
         arguments = listOf(navArgument(TASK_ID_PARAM_KEY) { nullable = true })
     ) {
-        val viewModel: TaskDetailVM = viewModel(factory = taskGraph.taskDetailsViewModelFactoryFactory.create(1))
+        val taskId = it.arguments?.getLong(TASK_ID_PARAM_KEY) ?: 0
+        val viewModel: TaskDetailVM =
+            viewModel(factory = taskGraph.taskDetailsViewModelFactoryFactory.create(taskId))
         val state = viewModel.taskState.collectAsStateWithLifecycle()
         TaskDetailsScreen(
             uiState = state.value,

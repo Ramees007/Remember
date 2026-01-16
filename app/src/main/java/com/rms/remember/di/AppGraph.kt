@@ -2,6 +2,7 @@ package com.rms.remember.di
 
 import android.content.Context
 import com.rms.db.AppDataBase
+import com.rms.remember.shared.feature.notes.presentation.di.NotesGraph
 import com.rms.remember.shared.feature.tasks.presentation.di.TasksGraph
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
@@ -16,6 +17,9 @@ import kotlinx.coroutines.Dispatchers
 interface AppGraph {
 
     val tasksGraphFactory: TasksGraph.Factory
+
+    val notesGraphFactory: NotesGraph.Factory
+
 
     @Provides
     fun providesDb(context: Context): AppDataBase = getDatabaseBuilder(context).build()

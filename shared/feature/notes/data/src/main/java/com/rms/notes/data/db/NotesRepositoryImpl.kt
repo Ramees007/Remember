@@ -4,9 +4,11 @@ import com.rms.db.dao.NotesDao
 import com.rms.db.model.NotesDbItem
 import com.rms.notes.data.NotesRepository
 import com.rms.notes.data.model.NotesItem
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.mapNotNull
 
+@Inject
 class NotesRepositoryImpl(private val notesDao: NotesDao) : NotesRepository {
 
     override fun getNotes(): Flow<List<NotesItem>> {

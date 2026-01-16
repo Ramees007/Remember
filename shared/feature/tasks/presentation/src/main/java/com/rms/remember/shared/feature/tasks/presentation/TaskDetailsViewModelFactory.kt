@@ -14,7 +14,7 @@ class TaskDetailsViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TasksViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(TaskDetailVM::class.java)) {
             return TaskDetailVM(tasksUseCase, taskId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: $modelClass")

@@ -1,5 +1,6 @@
 plugins {
     id("com.rms.kmp.app.platforms.plugin")
+    alias(libs.plugins.metro)
 }
 
 kotlin {
