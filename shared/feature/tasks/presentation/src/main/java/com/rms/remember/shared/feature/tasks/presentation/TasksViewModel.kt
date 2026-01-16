@@ -1,19 +1,15 @@
-package com.rms.tasks.presentation
+package com.rms.remember.shared.feature.tasks.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramees.domain.TasksUseCase
-import com.rms.tasks.model.toTaskItem
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class TasksViewModel @Inject constructor(private val tasksUseCase: TasksUseCase) : ViewModel() {
+class TasksViewModel(private val tasksUseCase: TasksUseCase) : ViewModel() {
 
     val flow: StateFlow<TasksUiState> = tasksUseCase.getAllTasks().map {
         if (it.isEmpty()) TasksUiState.Empty

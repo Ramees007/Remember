@@ -22,10 +22,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.rms.tasks.model.TaskItem
-import com.rms.tasks.model.TaskStatus
-import com.rms.tasks.presentation.TasksUiIntent
-import com.rms.tasks.presentation.TasksUiState
+import com.rms.remember.shared.feature.tasks.presentation.TaskItem
+import com.rms.remember.shared.feature.tasks.presentation.TaskStatus
+import com.rms.remember.shared.feature.tasks.presentation.TasksUiIntent
+import com.rms.remember.shared.feature.tasks.presentation.TasksUiState
 import com.rms.ui.theme.LightGreen
 import com.rms.ui.theme.LightRed
 

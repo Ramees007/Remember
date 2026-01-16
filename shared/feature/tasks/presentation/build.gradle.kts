@@ -7,13 +7,13 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                api(libs.coroutines)
-                api(project(":shared:core:db"))
+                implementation(libs.androidx.lifecycle.viewmodel)
+                api(project(":shared:feature:tasks:domain"))
             }
         }
     }
 }
 
 android {
-    namespace = "com.rms.tasks.data"
+    namespace = "com.rms.tasks.presentation"
 }

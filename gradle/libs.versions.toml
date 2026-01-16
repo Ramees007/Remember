@@ -1,6 +1,6 @@
 [versions]
 agp = "8.13.2"
-kotlin = "2.1.0"
+kotlin = "2.2.20"
 javapoet = "1.13.0"
 room = "2.8.4"
 sqlite = "2.6.2"
@@ -12,7 +12,7 @@ androidx-core-ktx = "1.7.0"
 androidx-appcompat = "1.5.1"
 google-material = "1.7.0"
 javaxInject = "1"
-ksp = "2.1.0-1.0.28"
+ksp = "2.2.20-2.0.4"
 
 #compose
 hilt-navigation-compose = "1.0.0"
@@ -32,6 +32,9 @@ androidx-test-espresso-core = "3.5.0"
 kotlinStdlib = "2.0.21"
 kotlinTest = "2.0.21"
 
+androidx-viewmodel = "2.10.0"
+
+metro = "0.7.0"
 
 [libraries]
 datetime = { module = "io.github.vanpra.compose-material-dialogs:datetime", version.ref = "datetime" }
@@ -67,6 +70,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt-
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 androidx-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "androidx-compose-runtime" }
 androidx-lifecycle-vm-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidx-lifecycle-vm-compose" }
+androidx-lifecycle-viewmodel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-viewmodel" }
 androidx-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "androidx-compose-foundation" }
 androidx-compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "androidx-compose-material3" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle-runtime-compose" }
@@ -84,5 +88,6 @@ android-hilt = { id ="com.google.dagger.hilt.android", version.ref = "hilt-compi
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 androidx-room = { id = "androidx.room", version.ref = "room" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+metro = { id = "dev.zacsweers.metro", version.ref = "metro" }
 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

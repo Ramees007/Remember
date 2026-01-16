@@ -3,9 +3,11 @@ package com.rms.data
 import com.rms.data.model.TaskEntity
 import com.rms.db.dao.TaskDao
 import com.rms.db.model.TaskDbItem
+import dev.zacsweers.metro.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+@Inject
 class TaskRepositoryImpl(private val dao: TaskDao) :
     TaskRepository {
 

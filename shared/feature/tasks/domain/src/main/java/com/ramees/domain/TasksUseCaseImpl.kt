@@ -2,6 +2,8 @@ package com.ramees.domain
 
 import com.rms.data.TaskRepository
 import com.rms.data.model.TaskEntity
+import dev.zacsweers.metro.Inject
+import dev.zacsweers.metro.Named
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -9,8 +11,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import toLocalDate
 
+@Inject
 class TasksUseCaseImpl constructor(
     private val taskRepository: TaskRepository,
+    @Named("ioDispatcher")
     private val ioDispatcher: CoroutineDispatcher
 ) :
     TasksUseCase {

@@ -6,6 +6,8 @@ import com.rms.data.TaskRepository
 import com.rms.data.TaskRepositoryImpl
 import com.rms.db.dao.TaskDao
 import com.rms.remember.core.domain.IoDispatcher
+import com.rms.remember.shared.feature.tasks.presentation.TaskDetailVM
+import com.rms.remember.shared.feature.tasks.presentation.TasksViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,4 +26,10 @@ object TasksModule {
         repo: TaskRepository,
         @IoDispatcher dispatcher: CoroutineDispatcher
     ): TasksUseCase = TasksUseCaseImpl(repo, dispatcher)
+
+    @Provides
+    fun providesTasksViewModel(useCase: TasksUseCase) = TasksViewModel(useCase)
+
+    @Provides
+    fun providesTaskDetailVM(useCase: TasksUseCase) = TaskDetailVM(useCase, 1)
 }

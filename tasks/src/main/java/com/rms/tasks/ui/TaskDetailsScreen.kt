@@ -8,11 +8,9 @@ import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.rms.tasks.presentation.TaskDetailIntent
-import com.rms.tasks.presentation.TaskDetailUiState
+import com.rms.remember.shared.feature.tasks.presentation.TaskDetailIntent
+import com.rms.remember.shared.feature.tasks.presentation.TaskDetailUiState
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.datepicker

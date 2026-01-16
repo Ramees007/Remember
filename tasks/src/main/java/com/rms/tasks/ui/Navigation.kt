@@ -1,14 +1,17 @@
 package com.rms.tasks.ui
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.rms.tasks.presentation.TaskDetailVM
-import com.rms.tasks.presentation.TasksViewModel
+import com.rms.remember.shared.feature.tasks.presentation.TaskDetailVM
+import com.rms.remember.shared.feature.tasks.presentation.TasksViewModel
+import com.rms.tasks.di.createAppGraph
 
 const val TASKS_GRAPH_ROUTE = "tasks"
 internal const val TASK_ID_PARAM_KEY = "taskId"
@@ -25,7 +28,7 @@ fun NavGraphBuilder.tasksGraph(navController: NavController) {
 
 private fun NavGraphBuilder.taskListScreen(navController: NavController) {
     composable(TASKS_LIST_ROUTE) {
-        val viewModel: TasksViewModel = hiltViewModel()
+        val viewModel: TasksViewModel = viewModel(factory = createAppGraph(LocalContext.current).tasksGraphFactory.createTasksGraph().tasksViewModelFactory)
         val uiState = viewModel.flow.collectAsStateWithLifecycle()
         TasksRoute(
             uiState = uiState.value,
@@ -40,7 +43,7 @@ private fun NavGraphBuilder.taskDetailScreen(navController: NavController) {
         TASKS_DETAIL_ROTE_PATTERN,
         arguments = listOf(navArgument(TASK_ID_PARAM_KEY) { nullable = true })
     ) {
-        val viewModel: TaskDetailVM = hiltViewModel()
+        val viewModel: TaskDetailVM = viewModel(factory = createAppGraph(LocalContext.current).tasksGraphFactory.createTasksGraph().taskDetailsViewModelFactoryFactory.create(1))
         val state = viewModel.taskState.collectAsStateWithLifecycle()
         TaskDetailsScreen(
             uiState = state.value,

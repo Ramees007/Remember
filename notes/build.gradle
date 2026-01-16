@@ -3,6 +3,7 @@ plugins {
     id("com.rms.module-compose.plugin")
     id("com.rms.android-hilt.plugin")
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.metro)
 }
 
 android {
