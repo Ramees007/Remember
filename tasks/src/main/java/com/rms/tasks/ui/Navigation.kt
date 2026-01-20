@@ -15,7 +15,7 @@ const val TASKS_GRAPH_ROUTE = "tasks"
 internal const val TASK_ID_PARAM_KEY = "taskId"
 
 private const val TASKS_LIST_ROUTE = "tasksList"
-private const val TASKS_DETAIL_ROTE_PATTERN = "taskDetail?taskId={taskId}"
+private const val TASKS_DETAIL_ROUTE_PATTERN = "taskDetail?taskId={taskId}"
 private const val TASK_DETAIL_ROUTE = "taskDetail?taskId="
 fun NavGraphBuilder.tasksGraph(navController: NavController, taskGraph: TasksGraph) {
     navigation(startDestination = TASKS_LIST_ROUTE, route = TASKS_GRAPH_ROUTE) {
@@ -38,10 +38,10 @@ private fun NavGraphBuilder.taskListScreen(navController: NavController, taskGra
 
 private fun NavGraphBuilder.taskDetailScreen(navController: NavController, taskGraph: TasksGraph) {
     composable(
-        TASKS_DETAIL_ROTE_PATTERN,
+        TASKS_DETAIL_ROUTE_PATTERN,
         arguments = listOf(navArgument(TASK_ID_PARAM_KEY) { nullable = true })
     ) {
-        val taskId = it.arguments?.getLong(TASK_ID_PARAM_KEY) ?: 0
+        val taskId = it.arguments?.getString(TASK_ID_PARAM_KEY)?.toLongOrNull() ?: 0
         val viewModel: TaskDetailVM =
             viewModel(factory = taskGraph.taskDetailsViewModelFactoryFactory.create(taskId))
         val state = viewModel.taskState.collectAsStateWithLifecycle()

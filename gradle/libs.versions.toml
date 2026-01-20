@@ -2,6 +2,7 @@
 agp = "8.13.2"
 kotlin = "2.2.20"
 javapoet = "1.13.0"
+kotlinxDatetime = "0.7.1"
 room = "2.8.4"
 sqlite = "2.6.2"
 serialization = "1.7.3"
@@ -34,7 +35,7 @@ androidx-viewmodel = "2.10.0"
 metro = "0.7.0"
 
 [libraries]
-datetime = { module = "io.github.vanpra.compose-material-dialogs:datetime", version.ref = "datetime" }
+compose-dialog-datetime = { module = "io.github.vanpra.compose-material-dialogs:datetime", version.ref = "datetime" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "androidx-appcompat" }
 google-material = { module = "com.google.android.material:material", version.ref = "google-material" }
 androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
@@ -46,6 +47,7 @@ coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version
 javax-inject = { group = "javax.inject", name = "javax.inject", version.ref = "javaxInject" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidxAnnotation" }
 
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 

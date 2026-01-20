@@ -6,7 +6,8 @@ import com.ramees.domain.TasksUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
+import toDateString
 
 class TaskDetailVM(
     private val tasksUseCase: TasksUseCase,
@@ -53,8 +54,7 @@ class TaskDetailVM(
     }
 
     private fun setDate(localDate: LocalDate) {
-        // TODO fixme
-        val taskDate = "" //localDate.toDateString()
+        val taskDate = localDate.toDateString()
         _taskState.tryEmit(_taskState.value.copy(date = taskDate))
         save(_taskState.value.taskStr, taskDate)
     }
@@ -68,7 +68,7 @@ class TaskDetailVM(
         viewModelScope.launch {
             val task = _taskState.value
             val taskId = task.taskId
-            taskId?.let {
+            taskId?.takeIf { it != 0L }?.let {
                 tasksUseCase.update(it, taskTxt, taskDate)
             } ?: run {
                 val taskId = tasksUseCase.insert(taskTxt, taskDate)

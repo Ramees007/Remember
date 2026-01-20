@@ -7,7 +7,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(project(":core:util"))
+                implementation(project(":shared:util"))
                 api(project(":shared:feature:tasks:data"))
             }
         }

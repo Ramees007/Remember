@@ -1,12 +1,22 @@
 package com.rms.tasks.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.DateRange
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.rms.remember.shared.feature.tasks.presentation.TaskDetailIntent
@@ -15,9 +25,10 @@ import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
-import getCurrentLocalDate
-import toLocalDate
-import java.time.LocalDate
+import getCurrentJavaLocalDate
+import kotlinx.datetime.LocalDate
+import toJavaLocalDate
+import toKmp
 
 @Composable
 fun TaskDetailsScreen(
@@ -118,10 +129,10 @@ fun DateTimePickerDialog(
     ) {
         datepicker(
             initialDate = dateStr?.takeIf { it.isNotEmpty() }
-                ?.toLocalDate()
-                ?: getCurrentLocalDate()
+                ?.toJavaLocalDate()
+                ?: getCurrentJavaLocalDate()
         ) { date ->
-            onDateSet(date)
+            onDateSet(date.toKmp())
         }
     }
 }

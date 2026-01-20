@@ -6,14 +6,15 @@ fun LocalDate.toDateString(dateFormat: DateFormat = DateFormat.DD_MMM_YY): Strin
     return format(formatter)
 }
 
-fun String.toLocalDate(dateFormat: DateFormat = DateFormat.DD_MMM_YY): LocalDate {
+fun String.toJavaLocalDate(dateFormat: DateFormat = DateFormat.DD_MMM_YY): LocalDate {
     val formatter = DateTimeFormatter.ofPattern(dateFormat.format)
     return LocalDate.parse(this, formatter)
 }
 
-fun getCurrentLocalDate(): LocalDate = LocalDate.now()
+fun getCurrentJavaLocalDate(): LocalDate = LocalDate.now()
 
-enum class DateFormat(val format: String) {
-    DD_MM_YY("dd MM yy"),
-    DD_MMM_YY("dd MMM yy")
-}
+fun LocalDate.toKmp(): kotlinx.datetime.LocalDate =
+    kotlinx.datetime.LocalDate(year, monthValue, dayOfMonth)
+
+fun kotlinx.datetime.LocalDate.toJava(): LocalDate =
+    LocalDate.of(year, monthNumber, dayOfMonth)

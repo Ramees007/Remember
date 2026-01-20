@@ -9,6 +9,7 @@ kotlin {
             dependencies {
                 implementation(libs.androidx.lifecycle.viewmodel)
                 api(project(":shared:feature:tasks:domain"))
+                implementation(project(":shared:util"))
             }
         }
     }
