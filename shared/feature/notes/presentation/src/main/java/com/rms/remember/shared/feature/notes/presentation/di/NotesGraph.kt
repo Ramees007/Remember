@@ -1,7 +1,7 @@
 package com.rms.remember.shared.feature.notes.presentation.di
 
-import com.rms.db.AppDataBase
-import com.rms.db.dao.NotesDao
+import db.AppDataBase
+import db.dao.NotesDao
 import com.rms.domain.DeleteNoteUseCase
 import com.rms.domain.DeleteNoteUseCaseImpl
 import com.rms.domain.GetNoteUseCase

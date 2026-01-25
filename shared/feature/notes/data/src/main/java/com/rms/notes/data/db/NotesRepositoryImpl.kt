@@ -1,7 +1,7 @@
 package com.rms.notes.data.db
 
-import com.rms.db.dao.NotesDao
-import com.rms.db.model.NotesDbItem
+import db.dao.NotesDao
+import db.model.NotesDbItem
 import com.rms.notes.data.NotesRepository
 import com.rms.notes.data.model.NotesItem
 import dev.zacsweers.metro.Inject

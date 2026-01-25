@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.rms.domain.DeleteNoteUseCase
 import com.rms.domain.GetNoteUseCase
 import com.rms.domain.SaveNoteUseCase
-import com.rms.remember.core.presentation.base.BaseViewModel
+import BaseViewModel
 import kotlinx.coroutines.launch
 
 class NoteDetailViewModel(

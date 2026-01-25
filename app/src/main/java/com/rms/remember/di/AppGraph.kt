@@ -1,9 +1,9 @@
 package com.rms.remember.di
 
 import android.content.Context
-import com.rms.db.AppDataBase
+import db.AppDataBase
 import com.rms.remember.shared.feature.notes.presentation.di.NotesGraph
-import com.rms.remember.shared.feature.tasks.presentation.di.TasksGraph
+import presentation.di.TasksGraph
 import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Named

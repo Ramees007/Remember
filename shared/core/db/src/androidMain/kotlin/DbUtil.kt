@@ -1,7 +1,7 @@
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.rms.db.AppDataBase
+import db.AppDataBase
 
 fun getDatabaseBuilder(context: Context): RoomDatabase.Builder<AppDataBase> {
     val appContext = context.applicationContext

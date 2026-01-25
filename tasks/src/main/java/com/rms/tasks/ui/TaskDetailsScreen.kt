@@ -19,8 +19,8 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.rms.remember.shared.feature.tasks.presentation.TaskDetailIntent
-import com.rms.remember.shared.feature.tasks.presentation.TaskDetailUiState
+import presentation.TaskDetailIntent
+import presentation.TaskDetailUiState
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.MaterialDialogState
 import com.vanpra.composematerialdialogs.datetime.date.datepicker

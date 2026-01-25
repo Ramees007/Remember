@@ -2,14 +2,16 @@ package com.rms.tasks.ui
 
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.rms.remember.shared.feature.tasks.presentation.TaskDetailVM
-import com.rms.remember.shared.feature.tasks.presentation.TasksViewModel
-import com.rms.remember.shared.feature.tasks.presentation.di.TasksGraph
+import presentation.TaskDetailVM
+import presentation.TasksViewModel
+import presentation.di.TasksGraph
 
 const val TASKS_GRAPH_ROUTE = "tasks"
 internal const val TASK_ID_PARAM_KEY = "taskId"
@@ -26,7 +28,12 @@ fun NavGraphBuilder.tasksGraph(navController: NavController, taskGraph: TasksGra
 
 private fun NavGraphBuilder.taskListScreen(navController: NavController, taskGraph: TasksGraph) {
     composable(TASKS_LIST_ROUTE) {
-        val viewModel: TasksViewModel = viewModel(factory = taskGraph.tasksViewModelFactory)
+        val tasksViewModelFactory = viewModelFactory {
+            initializer {
+                TasksViewModel(taskGraph.tasksUseCase)
+            }
+        }
+        val viewModel: TasksViewModel = viewModel(factory = tasksViewModelFactory)
         val uiState = viewModel.flow.collectAsStateWithLifecycle()
         TasksRoute(
             uiState = uiState.value,
@@ -42,8 +49,12 @@ private fun NavGraphBuilder.taskDetailScreen(navController: NavController, taskG
         arguments = listOf(navArgument(TASK_ID_PARAM_KEY) { nullable = true })
     ) {
         val taskId = it.arguments?.getString(TASK_ID_PARAM_KEY)?.toLongOrNull() ?: 0
-        val viewModel: TaskDetailVM =
-            viewModel(factory = taskGraph.taskDetailsViewModelFactoryFactory.create(taskId))
+        val taskDetailsViewModelFactory = viewModelFactory {
+            initializer {
+                TaskDetailVM(taskGraph.tasksUseCase, taskId)
+            }
+        }
+        val viewModel: TaskDetailVM = viewModel(factory = taskDetailsViewModelFactory)
         val state = viewModel.taskState.collectAsStateWithLifecycle()
         TaskDetailsScreen(
             uiState = state.value,
