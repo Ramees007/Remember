@@ -7,7 +7,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.androidx.lifecycle.viewmodel)
+                implementation(project(":shared:core:presentation"))
                 api(project(":shared:feature:tasks:domain"))
                 implementation(project(":shared:util"))
             }

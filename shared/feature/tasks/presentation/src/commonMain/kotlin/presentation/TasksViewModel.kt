@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import domain.TasksUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -31,6 +33,10 @@ class TasksViewModel(private val tasksUseCase: TasksUseCase) : ViewModel() {
             }
         }
     }
+
+    // TODO replace with ios flow support
+    fun observeState(onChange: (TasksUiState) -> Unit) =
+        flow.onEach(onChange).launchIn(viewModelScope)
 
     private fun onCheckedChanged(id: Long, isChecked: Boolean) {
         viewModelScope.launch {

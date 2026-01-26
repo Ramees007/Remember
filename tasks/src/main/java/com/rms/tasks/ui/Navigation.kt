@@ -1,5 +1,6 @@
 package com.rms.tasks.ui
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.viewmodel.initializer
@@ -28,12 +29,7 @@ fun NavGraphBuilder.tasksGraph(navController: NavController, taskGraph: TasksGra
 
 private fun NavGraphBuilder.taskListScreen(navController: NavController, taskGraph: TasksGraph) {
     composable(TASKS_LIST_ROUTE) {
-        val tasksViewModelFactory = viewModelFactory {
-            initializer {
-                TasksViewModel(taskGraph.tasksUseCase)
-            }
-        }
-        val viewModel: TasksViewModel = viewModel(factory = tasksViewModelFactory)
+        val viewModel: TasksViewModel = viewModel(factory = taskGraph.tasksVmFactory)
         val uiState = viewModel.flow.collectAsStateWithLifecycle()
         TasksRoute(
             uiState = uiState.value,
@@ -51,7 +47,7 @@ private fun NavGraphBuilder.taskDetailScreen(navController: NavController, taskG
         val taskId = it.arguments?.getString(TASK_ID_PARAM_KEY)?.toLongOrNull() ?: 0
         val taskDetailsViewModelFactory = viewModelFactory {
             initializer {
-                TaskDetailVM(taskGraph.tasksUseCase, taskId)
+                taskGraph.taskDetailsVmFactory.create(taskId)
             }
         }
         val viewModel: TaskDetailVM = viewModel(factory = taskDetailsViewModelFactory)

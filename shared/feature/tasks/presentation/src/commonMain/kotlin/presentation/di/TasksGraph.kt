@@ -9,29 +9,21 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.Binds
 import dev.zacsweers.metro.ContributesTo
 import dev.zacsweers.metro.GraphExtension
-import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.Scope
 import domain.TasksUseCase
 import domain.TasksUseCaseImpl
-import kotlinx.coroutines.CoroutineDispatcher
+import presentation.TaskDetailVMAssistedFactory
+import presentation.TasksViewModelFactory
 
 @GraphExtension(TasksScope::class)
 interface TasksGraph {
 
-    //val tasksViewModelFactory: TasksViewModelFactory
 
-//    @Provides
-//    fun taskDetailsViewModelFactory(
-//        taskId: Long,
-//        tasksUseCase: TasksUseCase
-//    ) = viewModelFactory {
-//        initializer {
-//            TaskDetailVM(tasksUseCase, taskId)
-//        }
-//    }
+    // FIx with proper factory
+    val taskDetailsVmFactory: TaskDetailVMAssistedFactory
 
-    val tasksUseCase: TasksUseCase
+    val tasksVmFactory: TasksViewModelFactory
 
     @Binds
     val TasksUseCaseImpl.Bind: TasksUseCase
