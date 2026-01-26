@@ -2,6 +2,7 @@ package presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
 import domain.TasksUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class TasksViewModel(private val tasksUseCase: TasksUseCase) : ViewModel() {
 
+    @NativeCoroutines
     val flow: StateFlow<TasksUiState> = tasksUseCase.getAllTasks().map {
         if (it.isEmpty()) TasksUiState.Empty
         else TasksUiState.Tasks(it.map { it.toTaskItem() })

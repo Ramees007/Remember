@@ -1,6 +1,7 @@
 plugins {
     id("com.rms.kmp.app.platforms.plugin")
     alias(libs.plugins.metro)
+    id("com.rickclephas.kmp.nativecoroutines") version "1.0.0-ALPHA-48"
 }
 
 kotlin {

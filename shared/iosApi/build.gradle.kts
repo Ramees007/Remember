@@ -2,7 +2,6 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     id("com.rms.kmp.app.platforms.plugin")
-    id("co.touchlab.skie") version "0.10.9" // double check
     alias(libs.plugins.metro)
 }
 
