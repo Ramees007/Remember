@@ -8,6 +8,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metro.createGraphFactory
 import getDatabaseBuilder
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,6 +23,7 @@ interface AppGraph {
 
 
     @Provides
+    @SingleIn(AppScope::class)
     fun providesDb(context: Context): AppDataBase = getDatabaseBuilder(context).build()
 
     @Provides

@@ -20,7 +20,7 @@ class TasksViewModel(private val tasksUseCase: TasksUseCase) : ViewModel() {
         else TasksUiState.Tasks(it.map { it.toTaskItem() })
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
+        started = SharingStarted.Eagerly,
         initialValue = TasksUiState.Loading
     )
 

@@ -7,6 +7,7 @@ import dev.zacsweers.metro.AppScope
 import dev.zacsweers.metro.DependencyGraph
 import dev.zacsweers.metro.Named
 import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import dev.zacsweers.metro.createGraphFactory
 import kotlinx.atomicfu.locks.SynchronizedObject
 import kotlinx.atomicfu.locks.synchronized
@@ -27,6 +28,7 @@ interface IosAppGraph {
     //val notesGraphFactory: NotesGraph.Factory
 
     @Provides
+    @SingleIn(AppScope::class)
     fun providesDb(): AppDataBase = getDatabaseBuilder().build()
 
     @Provides

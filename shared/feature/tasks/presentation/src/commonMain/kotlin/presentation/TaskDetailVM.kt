@@ -2,6 +2,10 @@ package presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import domain.TasksUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,9 +13,10 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import toDateString
 
+@AssistedInject
 class TaskDetailVM(
-    private val tasksUseCase: TasksUseCase,
-    private val taskId: Long
+    @Assisted val taskId: Long,
+    private val tasksUseCase: TasksUseCase
 ) : ViewModel() {
 
     private val _taskState: MutableStateFlow<TaskDetailUiState> = MutableStateFlow(
@@ -19,6 +24,8 @@ class TaskDetailVM(
             taskId = taskId
         )
     )
+
+    @NativeCoroutines
     val taskState: StateFlow<TaskDetailUiState>
         get() = _taskState
 
@@ -75,5 +82,10 @@ class TaskDetailVM(
                 _taskState.emit(_taskState.value.copy(taskId = taskId))
             }
         }
+    }
+
+    @AssistedFactory
+    fun interface Factory {
+        fun create(taskId: Long): TaskDetailVM
     }
 }

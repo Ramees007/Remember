@@ -1,6 +1,10 @@
 package presentation.di
 
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import data.TaskRepository
 import data.TaskRepositoryImpl
 import db.AppDataBase
@@ -13,15 +17,13 @@ import dev.zacsweers.metro.Provides
 import dev.zacsweers.metro.Scope
 import domain.TasksUseCase
 import domain.TasksUseCaseImpl
-import presentation.TaskDetailVMAssistedFactory
+import presentation.TaskDetailVM
 import presentation.TasksViewModelFactory
 
 @GraphExtension(TasksScope::class)
 interface TasksGraph {
-
-
-    // FIx with proper factory
-    val taskDetailsVmFactory: TaskDetailVMAssistedFactory
+    
+    val taskDetailsVmFactory: TaskDetailVM.Factory
 
     val tasksVmFactory: TasksViewModelFactory
 
@@ -44,3 +46,11 @@ interface TasksGraph {
 
 @Scope
 annotation class TasksScope
+
+inline fun <reified T : ViewModel> createViewModelFactory(
+    crossinline vmCreator: () -> T
+): ViewModelProvider.Factory = viewModelFactory {
+    initializer<T> {
+        vmCreator()
+    }
+}
