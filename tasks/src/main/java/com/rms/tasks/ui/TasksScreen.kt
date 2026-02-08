@@ -160,7 +160,8 @@ fun DismissBg(dismissState: DismissState) {
 
 @Composable
 fun TaskItem(
-    task: TaskItem, onCheckedChanged: (Long, Boolean) -> Unit,
+    task: TaskItem,
+    onCheckedChanged: (Long, Boolean) -> Unit,
     onNavigateToTaskDetail: (taskId: Long) -> Unit
 ) {
     ElevatedCard(
